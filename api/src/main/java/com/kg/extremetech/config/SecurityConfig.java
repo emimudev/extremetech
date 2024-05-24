@@ -42,19 +42,21 @@ public class SecurityConfig {
         .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(
-                new AntPathRequestMatcher("/api/v1/auth/**", "POST")
-            // new AntPathRequestMatcher("/*/**", "GET")
+                new AntPathRequestMatcher("/api/v1/auth/**", "POST"),
+                new AntPathRequestMatcher("/api/v1/products/**", "GET"),
+                new AntPathRequestMatcher("/api/v1/category/**", "GET"),
+                new AntPathRequestMatcher("/api/v1/brands/**", "GET")
             )
-            .permitAll() // Allow POST requests to /user without authentication
+            .permitAll()
             .anyRequest().authenticated() // Ensures all requests are authenticated.
         )
         .exceptionHandling((custom) -> {
           custom.authenticationEntryPoint((request, response, authException) -> {
             ObjectWriter ow = new ObjectMapper().writer();
             response.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write(
-              ow.writeValueAsString(new Response<>(null, authException.getMessage(), HttpStatus.FORBIDDEN))
+              ow.writeValueAsString(new Response<>(null, authException.getMessage(), HttpStatus.UNAUTHORIZED))
             );
           });
         })

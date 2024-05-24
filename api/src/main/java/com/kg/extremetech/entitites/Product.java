@@ -1,19 +1,29 @@
 package com.kg.extremetech.entitites;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import com.kg.extremetech.entitites.keys.ProductAttributeValue;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,27 +37,57 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Product {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  // @Column(nullable = false, updatable = false)
-  private String id;
-  @Column(nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false, unique = true)
+  @UuidGenerator
+  private String code;
+
+  @Column(nullable = false, unique = true)
   private String name;
+
   private String description;
+
   @Column(nullable = false)
   private Double price;
-  // @OneToMany()
-  // @JoinTable(
-  //   name = "product_attribute",
-  //   joinColumns = @JoinColumn(name = "product_id"),
-  //   inverseJoinColumns = @JoinColumn(name = "attribute_id")
-  // )
+
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "offer_id")
+  private Offer offer;
+
   @ManyToOne(optional = false)
   private Brand brand;
-  @ManyToOne(optional = false)
+  
+  @ManyToOne(optional = false )
   private Category category;
+
   @Column(nullable = false)
   @Builder.Default
   private Long stock = 1L;
+
+  @ElementCollection()
+  @CollectionTable(name = "product_image")
+  @Column(name = "image", length = 1000)
+  @Builder.Default
+  private List<String> images = List.of();
+
+  @CreationTimestamp
+  private Date createdAt;
+
+  @UpdateTimestamp
+  private Date updatedAt;
+
+  @Builder.Default
+  private Boolean isFeatured = false;
+
+  @ElementCollection()
+  @CollectionTable(name = "product_feature")
+  @MapKeyColumn(name = "feature_key")
+  @Column(name = "value")
+  @Builder.Default
+  private Map<String, String> features = new HashMap<>();
+
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private Set<ProductAttributeValue> attributes;
 }

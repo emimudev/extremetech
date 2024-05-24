@@ -19,6 +19,7 @@ import com.kg.extremetech.entitites.RefreshToken;
 import com.kg.extremetech.entitites.User;
 import com.kg.extremetech.responses.Response;
 import com.kg.extremetech.services.AuthService;
+import com.kg.extremetech.services.CartService;
 import com.kg.extremetech.services.JwtService;
 import com.kg.extremetech.services.RefreshTokenService;
 
@@ -34,9 +35,16 @@ public class AuthController {
   @Autowired
   private RefreshTokenService refreshTokenService;
 
+  @Autowired
+  private CartService cartService;
+
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody SignupRequestDTO registerUserDto) {
-    return Response.of(() -> authService.signup(registerUserDto));
+    return Response.of(() -> {
+      final var result = authService.signup(registerUserDto);
+      cartService.createCart(result);
+      return UserDTO.from(result);
+    });
   }
 
   @PostMapping("/login")
@@ -57,7 +65,7 @@ public class AuthController {
         .build());
   }
 
-  @PostMapping("/refreshToken")
+  @PostMapping("/refresh-token")
   public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO) {
     return Response.of(() -> {
       final var refreshToken = refreshTokenService.findByToken(refreshTokenRequestDTO.getToken());

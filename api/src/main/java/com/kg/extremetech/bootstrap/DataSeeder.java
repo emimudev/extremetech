@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @Component
 public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
@@ -219,12 +220,19 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
       brands.forEach(brand -> {
         for (var i = 1; i < 15; i++) {
           final var product = Product.builder()
-              .name("Product " + category.getName() + " " + i)
+              .name("Product " + category.getName() + " " + brand.getName() + " " + i)
               .description("Product description " + i)
               .price(1000.0 * i)
               .brand(Brand.builder().id(brand.getId()).build())
               .category(Category.builder().id(category.getId()).build())
+              .offer(i == 14 ? Offer.builder().discount(30.0).build() : null)
+              .images(List.of(
+                  "https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/A182DF3B-87D5-4534-AF9C-05DDE005E007/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/8DBA2F72-7907-48F2-A974-B5C41A05FF8B/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/FD41F737-BF20-45BF-963B-D1A530A8F974/w1000/h732"))
               .stock(i * 10L)
+              .isFeatured(new Random().nextBoolean())
               .build();
           products.add(product);
         }

@@ -33,7 +33,7 @@ public class AuthService {
   @Autowired
   private AuthenticationManager authenticationManager;
 
-  public UserDTO signup(SignupRequestDTO input) {
+  public User signup(SignupRequestDTO input) {
     Optional<Role> optionalRole = roleRepository.findByType(RoleType.CLIENT);
 
     if (optionalRole.isEmpty()) {
@@ -49,7 +49,7 @@ public class AuthService {
       .fullName(input.name + " " + input.lastname)
       .build();
 
-    return UserDTO.from(userRepository.save(user));
+    return userRepository.save(user);
   }
 
   public User authenticate(LoginRequestDTO input) {
