@@ -29,7 +29,7 @@ public class BrandController {
   }
 
   @GetMapping("/{brandId}")
-  public ResponseEntity<?> findById(@PathVariable String brandId) {
+  public ResponseEntity<?> findById(@PathVariable Long brandId) {
     return Response.of(() -> brandService.findById(brandId));
   }
 

@@ -44,8 +44,11 @@ public class SecurityConfig {
             .requestMatchers(
                 new AntPathRequestMatcher("/api/v1/auth/**", "POST"),
                 new AntPathRequestMatcher("/api/v1/products/**", "GET"),
+                new AntPathRequestMatcher("/api/v1/products/filter/**", "POST"),
                 new AntPathRequestMatcher("/api/v1/category/**", "GET"),
-                new AntPathRequestMatcher("/api/v1/brands/**", "GET")
+                new AntPathRequestMatcher("/api/v1/brands/**", "GET"),
+                new AntPathRequestMatcher("/api/v1/attribute/**", "GET"),
+                new AntPathRequestMatcher("/api/v1/attribute/filters", "POST")
             )
             .permitAll()
             .anyRequest().authenticated() // Ensures all requests are authenticated.

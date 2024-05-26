@@ -12,9 +12,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.kg.extremetech.repositories.UserRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Configuration
 public class AppConfig {
+
+  @PersistenceContext
+  private EntityManager em;
+
+  @Bean
+  public JPAQueryFactory jpaQueryFactory() {
+    return new JPAQueryFactory(em);
+  }
 
   @Autowired
   private UserRepository userRepository;

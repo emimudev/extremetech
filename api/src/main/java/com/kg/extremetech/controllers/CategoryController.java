@@ -20,7 +20,6 @@ public class CategoryController {
 
   @GetMapping("/all")
   public ResponseEntity<?> findAll() {
-    System.out.println("------------------------------------------------------------------");
     return Response.of(categoryService::findAll);
   }
 
@@ -30,7 +29,7 @@ public class CategoryController {
   }
 
   @GetMapping("/{categoryId}")
-  public ResponseEntity<?> findById(@PathVariable String categoryId) {
+  public ResponseEntity<?> findById(@PathVariable Long categoryId) {
     return Response.of(() -> categoryService.findById(categoryId));
   }
 

@@ -13,22 +13,22 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from '@/components/ui/navigation-menu'
-import { productsMenuItems } from './menu-items'
 import { Link } from 'react-router-dom'
 import { Divider } from '@nextui-org/react'
 import Glow from '@/components/glow'
+import { categoriesMenuItems } from '@/data/categories'
 
 export function NavbarMenu() {
   return (
     <NavigationMenu className='relative'>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className='relative'>
-              <Glow className=' absolute text-indigo-300 -top-[30%] -z-[1]' />
+              <Glow className='absolute text-indigo-300 -top-[30%] -z-[1]' />
               <ul className='grid py-4 w-full z-0'>
-                {productsMenuItems.map(([sectionTitle, menuItems], index) => {
+                {Object.entries(categoriesMenuItems).map(([sectionTitle, menuItems], index) => {
                   return (
                     <li key={index}>
                       <div className='flex px-4 flex-col '>
@@ -39,10 +39,10 @@ export function NavbarMenu() {
                           {menuItems.map((item) => {
                             return (
                               <ListItem
-                                key={item.title}
-                                title={item.title}
-                                icon={item.icon}
-                                to={item.href}
+                                key={item.code}
+                                title={item.name}
+                                icon={<item.Icon></item.Icon>}
+                                to={`/products/${item.code}`}
                               >
                                 {item.description}
                               </ListItem>
@@ -50,7 +50,7 @@ export function NavbarMenu() {
                           })}
                         </ul>
                       </div>
-                      {index < productsMenuItems.length - 1 && (
+                      {index < Object.entries(categoriesMenuItems).length - 1 && (
                         <Divider className='mb-4 mt-2' />
                       )}
                     </li>
@@ -85,7 +85,7 @@ const ListItem = forwardRef<
             <div className='flex items-center justify-center flex-[0_0_auto] text-foreground-secondary w-5 h-5'>
               {icon}
             </div>
-            <div className='flex flex-col flex-1 gap-1.5'>
+            <div className='flex flex-col flex-1'>
               <div className='text-sm font-medium leading-none'>{title}</div>
               <p className='line-clamp-1 text-sm leading-snug text-muted-cn-foreground'>
                 {children}

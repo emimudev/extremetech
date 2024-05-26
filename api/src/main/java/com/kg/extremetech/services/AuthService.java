@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.kg.extremetech.dtos.LoginRequestDTO;
 import com.kg.extremetech.dtos.SignupRequestDTO;
-import com.kg.extremetech.dtos.UserDTO;
 import com.kg.extremetech.entitites.Role;
 import com.kg.extremetech.entitites.RoleType;
 import com.kg.extremetech.entitites.User;

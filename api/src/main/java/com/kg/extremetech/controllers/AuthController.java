@@ -86,16 +86,6 @@ public class AuthController {
           .expiresIn(jwtService.getExpirationTime())
           .refreshToken(newRefreshToken.getToken())
           .build();
-      // return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
-      // .map(refreshTokenService::verifyExpiration)
-      // .map(RefreshToken::getUser)
-      // .map(user -> {
-      // String accessToken = jwtService.generateToken(user);
-      // return JwtResponseDTO.builder()
-      // .accessToken(accessToken)
-      // .token(refreshTokenRequestDTO.getToken()).build();
-      // }).orElseThrow(() -> new RefreshTokenException("Invalid refresh token"));
-      // });
     });
   }
 }

@@ -18,7 +18,7 @@ export const readWriteAuthAtom = atom(
     if (data) {
       localStorage.setItem('auth', JSON.stringify(data))
     } else {
-      console.log('Removing auth from localStorage')
+      // console.log('Removing auth from localStorage')
       localStorage.removeItem('auth')
     }
     set(authAtom, data)

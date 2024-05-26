@@ -1,7 +1,7 @@
 import { Attribute } from './attribute'
 
 export interface Category {
-  id: string
+  id: number
   code: string
   name: string
   attributes: Attribute[]

@@ -4,27 +4,26 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
-
-import com.kg.extremetech.entitites.keys.ProductAttributeValue;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -64,6 +63,10 @@ public class Product {
 
   @Column(nullable = false)
   @Builder.Default
+  private Boolean isOnSale = true;
+
+  @Column(nullable = false)
+  @Builder.Default
   private Long stock = 1L;
 
   @ElementCollection()
@@ -88,6 +91,25 @@ public class Product {
   @Builder.Default
   private Map<String, String> features = new HashMap<>();
 
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-  private Set<ProductAttributeValue> attributes;
+  // @ElementCollection()
+  // @CollectionTable(name = "product_attribute_value")
+  @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
+  // @JoinTable(
+  //   name = "product_attribute_value", 
+  //   joinColumns = @JoinColumn(name = "product_id"),
+  //   inverseJoinColumns = @JoinColumn(name = "attribute_value_id"))
+  private List<AttributeValue> attributes;
+
+  // @PrePersist
+  // public Product addAttributes(List<AttributeValue> attributes) {
+  //   this.attributes = attributes;
+  //   attributes.forEach(attribute -> attribute.setProduct(this));
+  //   return this;
+  // }
+
+  @PrePersist
+  public void linkBidirectional() {
+    attributes.forEach(attribute -> attribute.setProduct(this));
+  }
+
 }

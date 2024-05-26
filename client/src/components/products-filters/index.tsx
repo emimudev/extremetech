@@ -1,138 +1,123 @@
-import { filtersProductsAtom } from '@/atoms'
-import useProductsFilters from '@/hooks/use-produts-filters'
 import { ICategory } from '@/types'
 import { Checkbox, Divider } from '@nextui-org/react'
-import { useSetAtom } from 'jotai'
 import ClearFiltersButton from './clear-filters-button'
-import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import PriceFilter from './price-filter'
+import useSWR from 'swr'
+import {
+  GetProductFiltersParams,
+  ProductService
+} from '@/services/product-service'
+import { existSearchParam } from '@/utils/search-params'
+import { KeyValuePairList } from '@/types/v2/key-value-pair-list'
+import { productsIgnoreKnownParams } from '../products-list'
+import { DelayedRender } from '../delayed-render'
 
 export interface ProductsFiltersProps {
   category: ICategory | undefined | null
 }
 
-export default function ProductsFilters() {
-  const { addFilter, clearFilters, existsFilter, removeFilter, allCategories } =
-    useProductsFilters()
-  const applyFilter = useSetAtom(filtersProductsAtom)
+export default function ProductsFilters({
+  categoryCode
+}: {
+  categoryCode: string
+}) {
   const [searchParams, setSearchParams] = useSearchParams()
-  const rootCategories = Object.values(allCategories).filter(
-    (category) => category.parent === null
-  )
-  const subCategories = Object.values(allCategories).filter(
-    (category) => category.parent !== null
+  const brands = searchParams.getAll('brand') ?? undefined
+  const filtersQuery: KeyValuePairList[] = []
+
+  searchParams.forEach((value, key) => {
+    if (productsIgnoreKnownParams.includes(key)) return
+    if (filtersQuery.find((filter) => filter.key === key)) {
+      filtersQuery.find((filter) => filter.key === key)?.values.push(value)
+    } else {
+      filtersQuery.push({ key, values: [value] })
+    }
+  })
+
+  const queryParams: GetProductFiltersParams = {
+    categoryCode,
+    brands,
+    filters: filtersQuery
+  }
+
+  const { data, isLoading } = useSWR(
+    [queryParams, '/api/v1/products/filter'],
+    ([params]) => ProductService.getFilters(params).then((res) => res.content),
+    { keepPreviousData: true }
   )
 
-  useEffect(() => {
-    if (searchParams.size === 0) {
-      clearFilters()
-      return
-    }
-    const categoriesParams = searchParams.getAll('categories')
-    const categories = categoriesParams.map(
-      (categoryId) => allCategories[categoryId]
+  if (!data || (isLoading && !data)) {
+    return (
+      <DelayedRender>
+        <div className=''>cargando...</div>
+      </DelayedRender>
     )
-    console.log({ categoriesParams, categories })
-    if (categories) {
-      applyFilter((prev) => {
-        return {
-          ...prev,
-          categories
-        }
-      })
-    }
-  }, [allCategories, searchParams, applyFilter, clearFilters])
-
-  // si category es undefined, mostrar todos los productos y la lista de categorias principales
-  // si category no es undefined, mostrar los productos de esa categoria y la lista de subcategorias
+  }
 
   return (
     <aside className='products-filters h-full hidden relative lg:block lg:col-span-3 pt-8 mb-10'>
-      <div className='lg:sticky h-full max-h-[calc(100vh-var(--navbar-height))] top-[calc(var(--navbar-height)+50px)] z-0 pt-0 pb-0'>
-        <div className='max-h-[100%] overflow-x-hidden overflow-y-auto'>
+      <div className='lg:sticky h-fit top-[calc(var(--navbar-height)+50px)] z-0 pt-0 pb-0'>
+        <div className='max-h-[calc(100vh-var(--navbar-height)-32px)] overflow-x-hidden overflow-y-auto'>
           <div className='pb-4 text-lg'>
-            <div>
+            <div className='flex items-center justify-between'>
               <span>Filters</span>
-              <span className='flex xl:px-4'>
+              <span>
                 <ClearFiltersButton />
               </span>
             </div>
-            <Divider className='mt-2' />
+            <Divider className='mt-3' />
           </div>
           <div className='flex flex-col rounded-none'>
-            <div className='mb-3'>
-              <div className='pb-2 text-sm'>Categories</div>
-              <div className='flex flex-col gap-1 px-3'>
-                {rootCategories.map((category) => {
-                  return (
-                    <div key={category.id} className='w-full'>
-                      <Checkbox
-                        className='w-full'
-                        color='success'
-                        id=''
-                        radius='sm'
-                        size='sm'
-                        isSelected={existsFilter('categories', category)}
-                        onChange={(e) => {
-                          const isChecked = e.target.checked
-                          if (isChecked) {
-                            addFilter('categories', category)
-                            searchParams.append('categories', category.id)
-                            setSearchParams(searchParams)
-                          } else {
-                            removeFilter('categories', category)
-                            searchParams.delete('categories', category.id)
-                            setSearchParams(searchParams)
-                          }
-                        }}
-                      >
-                        {category.name}
-                      </Checkbox>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-            <Divider></Divider>
-            <div className='mb-3 mt-4'>
-              <div className='pb-2 text-sm'>Subcategories</div>
-              <div className='flex flex-col gap-1 px-3'>
-                {subCategories.map((category) => {
-                  return (
-                    <div key={category.id} className='w-full'>
-                      <Checkbox
-                        className='w-full'
-                        color='success'
-                        id=''
-                        radius='sm'
-                        size='sm'
-                        isSelected={existsFilter('categories', category)}
-                        onChange={(e) => {
-                          const isChecked = e.target.checked
-                          if (isChecked) {
-                            addFilter('categories', category)
-                            searchParams.append('categories', category.id)
-                            setSearchParams(searchParams)
-                          } else {
-                            removeFilter('categories', category)
-                            searchParams.delete('categories', category.id)
-                            setSearchParams(searchParams)
-                          }
-                        }}
-                      >
-                        {category.name}
-                      </Checkbox>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <Divider />
-            <div className='mb-3 mt-3'>
+            {/* <div className='mb-3'>
               <div className='flex flex-col gap-1'>
                 <PriceFilter />
+              </div>
+            </div>
+            <Divider className='my-2' /> */}
+            <div className='mb-3'>
+              <div className='flex flex-col gap-3.5 pr-3'>
+                {Object.entries(data).map(([filterKey, filterValues]) => {
+                  return (
+                    <div key={filterKey} className='w-full'>
+                      <div className='pb-2 text-sm text-foreground-strong'>
+                        {filterKey}
+                      </div>
+                      <div className='flex flex-col gap-0.5'>
+                        {filterValues.map((filterValue) => {
+                          const isSelected = existSearchParam(
+                            searchParams,
+                            filterKey,
+                            filterValue
+                          )
+                          return (
+                            <div key={filterValue} className='w-full line-clamp-1 pl-2'>
+                              <Checkbox
+                                className='w-full'
+                                classNames={{ label: 'line-clamp-1' }}
+                                color='success'
+                                radius='sm'
+                                size='sm'
+                                isSelected={isSelected}
+                                title={filterValue}
+                                onChange={() => {
+                                  if (isSelected) {
+                                    searchParams.delete(filterKey, filterValue)
+                                    setSearchParams(searchParams)
+                                  } else {
+                                    searchParams.append(filterKey, filterValue)
+                                    setSearchParams(searchParams)
+                                  }
+                                }}
+                              >
+                                {filterValue}
+                              </Checkbox>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </div>

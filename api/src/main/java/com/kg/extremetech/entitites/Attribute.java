@@ -21,7 +21,8 @@ public class Attribute {
   private String id;
   @Column(nullable = false)
   private String name;
-  // @ManyToOne(fetch = FetchType.LAZY)
-  // @JoinColumn(name = "category_id")
-  // private Category category;
+  @Column(nullable = false)
+  @Builder.Default
+  // This means that this attribute is required when creating a product
+  private Boolean isRequired = true;
 }

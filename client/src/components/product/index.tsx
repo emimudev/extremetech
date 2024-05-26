@@ -70,6 +70,24 @@ export default function Product({ product }: ProductProps) {
             >
               {category.name}
             </Chip>
+            <Chip
+              size='sm'
+              color='secondary'
+              variant='flat'
+              className='px-1 py-[2px] h-fit bg-neutral-500/20 leading-none'
+              classNames={{
+                content: 'text-xs text-white leading-none font-normal'
+              }}
+            >
+              {product.brand.name}
+            </Chip>
+          </div>
+          <div>
+            {product.attributes.map((attribute) => [
+              attribute.attribute.name,
+              '     ',
+              attribute.value
+            ])}
           </div>
         </div>
         <Divider />

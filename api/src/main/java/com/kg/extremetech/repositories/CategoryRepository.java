@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.kg.extremetech.entitites.Category;
 
 @Repository
-public interface CategoryRepository extends IRepository<Category, String> {
+public interface CategoryRepository extends IRepository<Category, Long> {
 
   // @EntityGraph(attributePaths = { "attributes" })
   // @NonNull

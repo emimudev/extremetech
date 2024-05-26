@@ -1,6 +1,5 @@
 package com.kg.extremetech.entitites;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;

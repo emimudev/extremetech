@@ -1,4 +1,16 @@
 import { ICategory } from '@/types'
+import { GpuIcon, MotherboardIcon } from '@/components/icons'
+import {
+  CpuIcon,
+  HeadsetIcon,
+  KeyboardIcon,
+  LaptopIcon,
+  MemoryStickIcon,
+  MonitorIcon,
+  MouseIcon,
+  PcCaseIcon
+} from 'lucide-react'
+import groupBy from 'lodash.groupby'
 
 export const AllCategories: Record<string, ICategory> = {
   computers: {
@@ -96,4 +108,100 @@ export const AllCategories: Record<string, ICategory> = {
   //   id: 'webcams',
   //   parent: 'peripherals'
   // }
+}
+
+export interface LocalCategory {
+  name: string
+  code: string
+  Icon: React.FC
+  groupedBy: string
+  description: string
+}
+
+export const LocalCategories: LocalCategory[] = [
+  {
+    name: 'Laptops',
+    code: 'laptop',
+    Icon: LaptopIcon,
+    groupedBy: 'Computers',
+    description: 'Take the adventure everywhere'
+  },
+  {
+    name: 'Desktops',
+    code: 'desktop',
+    Icon: PcCaseIcon,
+    groupedBy: 'Computers',
+    description: 'Powerful processors and dedicated graphics cards.'
+  },
+  {
+    name: 'Processors',
+    code: 'cpu',
+    Icon: CpuIcon,
+    groupedBy: 'Components',
+    description:
+      'Find the best CPUs that are designed to deliver the ultimate performance for your home or office.'
+  },
+  {
+    name: 'Graphics Card',
+    code: 'gpu',
+    Icon: GpuIcon,
+    groupedBy: 'Components',
+    description:
+      'Discover our range of GPUs that are engineered with powerful processors and dedicated graphics cards.'
+  },
+  {
+    name: 'Motherboards',
+    code: 'motherboard',
+    Icon: MotherboardIcon,
+    groupedBy: 'Components',
+    description:
+      'Explore our range of motherboards that are designed to deliver the ultimate performance for your home or office.'
+  },
+  {
+    name: 'Memory',
+    code: 'ram',
+    Icon: MemoryStickIcon,
+    groupedBy: 'Components',
+    description:
+      'Find the best memory that are engineered with powerful processors and dedicated graphics cards.'
+  },
+  {
+    name: 'Monitors',
+    code: 'monitor',
+    Icon: MonitorIcon,
+    groupedBy: 'Peripherals',
+    description:
+      'Explore our range of monitors that are designed to deliver the ultimate performance for your home or office.'
+  },
+  {
+    name: 'Keyboards',
+    code: 'keyboard',
+    Icon: KeyboardIcon,
+    groupedBy: 'Peripherals',
+    description:
+      'Discover our range of keyboards that are engineered with powerful processors and dedicated graphics cards.'
+  },
+  {
+    name: 'Mouse',
+    code: 'mouse',
+    Icon: MouseIcon,
+    groupedBy: 'Peripherals',
+    description:
+      'Find the best mice that are designed to deliver the ultimate performance for your home or office.'
+  },
+  {
+    name: 'Headsets',
+    code: 'headset',
+    Icon: HeadsetIcon,
+    groupedBy: 'Peripherals',
+    description:
+      'Explore our range of headsets that are engineered with powerful processors and dedicated graphics cards.'
+  }
+]
+
+export const categoriesMenuItems = groupBy(LocalCategories, 'groupedBy')
+
+export const findLocalCategoryByCode = (code: string | undefined | null) => {
+  if (!code) return null
+  return LocalCategories.find((category) => category.code === code)
 }

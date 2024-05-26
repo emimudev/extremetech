@@ -3,9 +3,8 @@ package com.kg.extremetech.repositories;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.kg.extremetech.entitites.Product;
 
 @Repository
-public interface ProductRepository extends IRepository<Product, Long> {
+public interface ProductRepository extends IRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
   @NonNull
   // @EntityGraph(attributePaths = { "category", "brand", "attributes", "features", "offer" })
@@ -33,6 +32,9 @@ public interface ProductRepository extends IRepository<Product, Long> {
 
   @NonNull
   public Page<Product> findByIsFeaturedTrue(Pageable pageable);
+
+  @NonNull
+  public Page<Product> findByCategoryCode(String categoryCode, Pageable pageable);
 
   // query all products that has a discount offer and sort them by discount value
   @Query("SELECT p FROM Product p WHERE p.offer.discount IS NOT NULL ORDER BY p.offer.discount DESC")

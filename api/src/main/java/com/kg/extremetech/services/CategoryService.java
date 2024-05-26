@@ -8,7 +8,7 @@ import com.kg.extremetech.repositories.CategoryRepository;
 
 @Service
 @Transactional
-public class CategoryService extends BaseServiceImp<Category, String, CategoryRepository> {
+public class CategoryService extends BaseServiceImp<Category, Long, CategoryRepository> {
 
   public Category findByName(String name) {
     return repository

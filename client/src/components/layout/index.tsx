@@ -7,7 +7,7 @@ import { Toaster } from '@/components/ui/sonner'
 
 export default function Layout() {
   return (
-    <div className='[--navbar-height:3rem] lg:[--navbar-height:4rem]'>
+    <div className='[--navbar-height:3rem] lg:[--navbar-height:4rem] pb-12 md:pb-0'>
       <Navbar />
       <main className='min-h-[100vh] pt-[var(--navbar-height)]'>
         <Outlet />

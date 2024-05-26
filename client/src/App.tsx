@@ -1,14 +1,16 @@
-import { NextUIProvider } from '@nextui-org/react'
+import { Suspense } from 'react'
 import { RouterProvider } from 'react-router-dom'
 import { AppRoutes } from './routes'
-import './App.css'
 import AuthContextProvider from './context/auth-context'
+import './App.css'
 
 function App() {
   return (
-    <AuthContextProvider>
-      <RouterProvider router={AppRoutes} />
-    </AuthContextProvider>
+    <Suspense>
+      <AuthContextProvider>
+        <RouterProvider router={AppRoutes} />
+      </AuthContextProvider>
+    </Suspense>
   )
 }
 

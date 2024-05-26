@@ -1,13 +1,35 @@
-import useProductsFilters from '@/hooks/use-produts-filters'
 import { Button } from '@nextui-org/react'
-import { useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
+
+const ignoreParams = ['page', 'size']
 
 export default function ClearFiltersButton() {
-  const { clearFilters, hasAnyFilter } = useProductsFilters()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const hasAnyFilter = () => {
+    let hasFilter = false
+    searchParams.forEach((_, key) => {
+      if (ignoreParams.includes(key)) return
+      hasFilter = true
+    })
+    return hasFilter
+  }
+
+  const clearFilters = () => {
+    const keysToDelete: string[] = []
+    searchParams.forEach((_, key) => {
+      console.log('param', { key })
+      if (ignoreParams.includes(key)) return
+      keysToDelete.push(key)
+    })
+    keysToDelete.forEach((key) => {
+      searchParams.delete(key)
+    })
+    setSearchParams(searchParams)
+  }
 
   const handleClick = () => {
-    navigate('/products')
     clearFilters()
   }
 

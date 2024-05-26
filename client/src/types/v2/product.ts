@@ -1,7 +1,7 @@
 import { Brand } from './brand'
 import { Category } from './category'
-import { Attribute } from './attribute'
 import { Offer } from './offer'
+import { AttributeValue } from './attribute-value'
 
 export interface Product {
   id: string
@@ -15,6 +15,6 @@ export interface Product {
   stock: number
   images: string[]
   createdAt: string
-  attributes: Attribute[]
+  attributes: AttributeValue[]
   features: Record<string, string | number | string[]>
 }

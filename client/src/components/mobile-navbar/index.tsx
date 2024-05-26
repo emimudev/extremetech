@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export default function MobileNavbar() {
   return (
-    <div className='fixed grid grid-cols-3 bottom-0 left-0 right-0 bg-background/90 z-50 md:hidden py-3 border-t border-accent'>
+    <div className='fixed grid grid-cols-3 bottom-0 left-0 right-0 bg-background/90 z-50 md:hidden h-12 border-t border-accent'>
       <div className='grid-cols-1 flex items-center justify-center'>
         <Link to='/' className='w-full h-full flex items-center justify-center'>
           <HomeIcon />

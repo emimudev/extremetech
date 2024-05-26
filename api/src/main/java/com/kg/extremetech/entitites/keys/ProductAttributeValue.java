@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@IdClass(ProductAttributeValueKey.class)
+// @Entity
+// @IdClass(ProductAttributeValueKey.class)
 public class ProductAttributeValue {
   @Id
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
   private Product product;
   @Id
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
   private Attribute attribute;
   // @Id
   // @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

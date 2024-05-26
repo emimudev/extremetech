@@ -10,7 +10,7 @@ import com.kg.extremetech.repositories.BrandRepository;
 
 @Service
 @Transactional
-public class BrandService extends BaseServiceImp<Brand, String, BrandRepository> {
+public class BrandService extends BaseServiceImp<Brand, Long, BrandRepository> {
 
   public Brand findByName(String name) {
     return repository

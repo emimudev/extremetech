@@ -7,10 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.kg.extremetech.entitites.Attribute;
+import com.kg.extremetech.entitites.AttributeValue;
 import com.kg.extremetech.entitites.Brand;
 import com.kg.extremetech.entitites.Category;
 import com.kg.extremetech.entitites.Product;
-import com.kg.extremetech.entitites.keys.ProductAttributeValue;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,6 +32,8 @@ public class ProductResponseDTO {
   private Brand brand;
   private Category category;
   @Builder.Default
+  private Boolean isOnSale = true;
+  @Builder.Default
   private Long stock = 1L;
   @Builder.Default
   private List<String> images = List.of();
@@ -40,10 +43,10 @@ public class ProductResponseDTO {
   private Boolean isFeatured = false;
   @Builder.Default
   private Map<String, String> features = new HashMap<>();
-  private Set<ProductAttributeDTO> attributes;
+  private List<ProductAttributeValueDTO> attributes;
 
   public static ProductResponseDTO from(Product product) {
-    if(product == null) {
+    if (product == null) {
       return null;
     }
     return ProductResponseDTO.builder()
@@ -55,13 +58,14 @@ public class ProductResponseDTO {
         .offer(OfferResponseDTO.from(product.getOffer()))
         .brand(product.getBrand())
         .category(product.getCategory())
+        .isOnSale(product.getIsOnSale())
         .stock(product.getStock())
         .images(product.getImages())
         .createdAt(product.getCreatedAt())
         .updatedAt(product.getUpdatedAt())
         .isFeatured(product.getIsFeatured())
         .features(product.getFeatures())
-        .attributes(product.getAttributes().stream().map(ProductAttributeDTO::from).collect(Collectors.toSet()))
+        .attributes(product.getAttributes().stream().map(ProductAttributeValueDTO::from).collect(Collectors.toList()))
         .build();
   }
 }
