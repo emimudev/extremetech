@@ -95,7 +95,7 @@ export function LoginForm() {
         <Button
           type='submit'
           color='primary'
-          className='w-full font-semibold !mt-5'
+          className='w-full font-semibold'
         >
           Sign in
         </Button>

@@ -6,12 +6,12 @@ export const securedAPI = axios.create()
 
 securedAPI.interceptors.request.use(
   async (config) => {
-    console.log('Intercepting request....')
-    console.log('Getting localAuth....')
+    // console.log('Intercepting request....')
+    // console.log('Getting localAuth....')
     const authLocalStr = localStorage.getItem('auth')
     if (authLocalStr) {
       const auth: LoginResponse = JSON.parse(authLocalStr)
-      console.log({ localAuth: auth })
+      // console.log({ localAuth: auth })
       config.headers = {
         Authorization: `Bearer ${auth.token.accessToken}`,
         Accept: 'application/json'

@@ -13,16 +13,10 @@ export function useCart() {
   const [cart, setCart] = useCartAtom()
   const { isAuthenticated, user } = useAuth()
 
-  const {
-    data: userCart,
-    isLoading,
-    isValidating,
-    mutate
-  } = useSWR(
+  const { isLoading, isValidating, mutate } = useSWR(
     () => {
       // if user is authenticated and user is owner of cart, fetch user cart
       if (isAuthenticated && user && user.id === cart.owner.id) {
-        console.log('hereeeeeeeeeeeeeeeeeeeeeeeeeee')
         return 'api/v1/cart'
       }
       return null
@@ -33,16 +27,22 @@ export function useCart() {
         .catch((err) => {
           console.log('Error fetching cart')
           console.error(err)
-        })
+        }),
+    {
+      onSuccess: (data) => {
+        if (!data) return
+        setCart(data)
+      }
+    }
   )
 
   // Update cart when user cart changes
 
-  useEffect(() => {
-    if (userCart) {
-      setCart(userCart)
-    }
-  }, [userCart, setCart])
+  // useEffect(() => {
+  //   if (userCart) {
+  //     setCart(userCart)
+  //   }
+  // }, [userCart, setCart])
 
   // Load local storage cart if user is not authenticated
   useEffect(() => {

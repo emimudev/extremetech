@@ -59,6 +59,7 @@ export default function Navbar() {
               size='sm'
               radius='full'
               className='text-sm font-semibold'
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === 'Space') && openModal()}
               onClick={openModal}
             >
               Join

@@ -24,7 +24,7 @@ export function ModalContent() {
         <Divider />
       </CardHeader>
       <CardContent className='flex flex-col items-center'>
-        <Tabs aria-label='Join options'>
+        <Tabs aria-label='Join options' disableAnimation>
           <Tab key='loginForm' title='Sign in' className='w-full'>
             <LoginForm />
           </Tab>

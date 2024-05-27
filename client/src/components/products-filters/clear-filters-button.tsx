@@ -19,7 +19,7 @@ export default function ClearFiltersButton() {
   const clearFilters = () => {
     const keysToDelete: string[] = []
     searchParams.forEach((_, key) => {
-      console.log('param', { key })
+      // console.log('param', { key })
       if (ignoreParams.includes(key)) return
       keysToDelete.push(key)
     })

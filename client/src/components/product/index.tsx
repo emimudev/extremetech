@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import AddProductToCart from '../add-product-cart'
 import { Product as ProductType } from '@/types/v2'
 import { useCart } from '@/hooks/v2/use-cart'
+import { useAuth } from '@/hooks/v2/use-auth'
+import { useJoinModal } from '@/atoms'
 
 export interface ProductProps {
   product: ProductType
@@ -12,7 +14,16 @@ export interface ProductProps {
 export default function Product({ product }: ProductProps) {
   const { category, offer, images, price, name } = product
   const { searchProduct } = useCart()
+  const { isAuthenticated } = useAuth()
+  const { openModal } = useJoinModal()
   const productInCart = searchProduct(product)
+
+  const handleAddToWishlist = () => {
+    if (isAuthenticated) {
+    } else {
+      openModal()
+    }
+  }
 
   return (
     <div className='product-item bg-white/[5%] backdrop-saturate-200 backdrop-blur-3xl flex flex-col rounded-xl border-white/[6%] border [&:hover_img]:scale-[1.02] [&:_.price]:shadow-black overflow-hidden flex-auto'>
@@ -103,7 +114,7 @@ export default function Product({ product }: ProductProps) {
               variant='flat'
               className='dark:bg-[#71717A]/40 p-1.5 text-sm'
               aria-label='Add to wishlist'
-              isDisabled
+              onClick={handleAddToWishlist}
             >
               <LucideHeart />
             </Button>

@@ -14,7 +14,6 @@ export default function ProductsPage() {
   }
 
   return (
-    // <ProductsContextProvider categoryCode={categoryCode}>
     <div className='min-h-[calc(100vh-var(--navbar-height))]'>
       <div className='h-8 flex flex-[0_0_auto] items-center main-padding bg-content1 sm:sticky top-[var(--navbar-height)] z-10 border-b-2'>
         <Breadcrumbs className='flex items-center'>
@@ -47,6 +46,5 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
-    // </ProductsContextProvider>
   )
 }

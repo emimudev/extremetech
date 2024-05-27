@@ -7,10 +7,15 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { LogOutIcon, UserIcon } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function UserAvatar() {
   // const { user, logout } = useAuth()
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const navigateToProfile = () => navigate('/me')
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -26,6 +31,12 @@ export default function UserAvatar() {
         </button>
       </DropdownTrigger>
       <DropdownMenu aria-label='User settings'>
+        <DropdownItem key='my-profile' onClick={navigateToProfile}>
+          <div className='flex items-center gap-3'>
+            <UserIcon className='w-4 h-4' />
+            My Profile
+          </div>
+        </DropdownItem>
         <DropdownItem key='logout' onClick={logout}>
           <div className='flex items-center gap-3'>
             <LogOutIcon className='w-4 h-4' />

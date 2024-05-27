@@ -49,8 +49,8 @@ export function SignupForm() {
     const { email, password, lastname, name } = values
     setIsLoading(true)
     signup({ email, password, lastname, name })
-      .then((res) => {
-        console.log('SignupResponse ', res)
+      .then(() => {
+        // console.log('SignupResponse ', res)
         closeModal()
       })
       .catch((err: APIResponse<null>) => {
@@ -165,7 +165,7 @@ export function SignupForm() {
         <Button
           type='submit'
           color='primary'
-          className='w-full font-semibold !mt-5'
+          className='w-full font-semibold'
           isLoading={isLoading}
         >
           Create account

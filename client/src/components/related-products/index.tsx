@@ -6,7 +6,7 @@ import { ProductService } from '@/services/product-service'
 import { Skeleton } from '@nextui-org/react'
 
 export function RelatedProducts({ categoryCode }: { categoryCode: string }) {
-  const { data, isLoading } = useSWR([categoryCode, 'api/v1/products/related'], ([code]) =>
+  const { data } = useSWR([categoryCode, 'api/v1/products/related'], ([code]) =>
     ProductService.findProductsByCategory(code).then((res) => res.content)
   )
   const { results } = data ?? { results: new Array(8).fill(0) }

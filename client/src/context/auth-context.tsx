@@ -34,8 +34,8 @@ export default function AuthContextProvider({
       return
     }
     AuthService.me()
-      .then((res) => {
-        console.log({ me: res })
+      .then(() => {
+        // console.log({ me: res })
       })
       .catch(() => {
         setIsAuthenticated(() => false)
@@ -52,7 +52,7 @@ export default function AuthContextProvider({
     }
     CartService.getMyCart()
       .then((res) => {
-        console.log('MyCart', res)
+        // console.log('MyCart', res)
         const cart = res.content!
         const localCartStr = localStorage.getItem(LOCAL_CART_KEY)
         const localCart = JSON.parse(localCartStr ?? 'null') as Cart | null
@@ -75,7 +75,7 @@ export default function AuthContextProvider({
 
   useEffect(() => {
     if (currentCart) {
-      console.log('MERGING')
+      // console.log('MERGING')
       const localCartStr = localStorage.getItem(LOCAL_CART_KEY)
       const localCart = JSON.parse(localCartStr ?? 'null') as Cart | null
       if (!localCart) return
@@ -89,7 +89,7 @@ export default function AuthContextProvider({
       })
       CartService.add(itemsRequest)
         .then((res) => {
-          console.log('Merged', res)
+          // console.log('Merged', res)
           currentCart.items = res.content!
           setCart(currentCart)
         })

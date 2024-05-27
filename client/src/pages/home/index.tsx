@@ -27,7 +27,7 @@ export default function HomePage() {
           <span className='text-foreground-strong'>Best </span>
           <span className='font-bold dark:text-rose-400'>Offers</span>
         </h2>
-        <div className='mt-12 mb-12 p-[0_4%] relative overflow-x-hidden'>
+        <div className='mt-12 mb-36 p-[0_4%] relative overflow-x-hidden'>
           <BestOffersProducts />
         </div>
       </section>
