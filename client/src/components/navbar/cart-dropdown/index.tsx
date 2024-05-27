@@ -1,13 +1,13 @@
-import { Button, Divider } from '@nextui-org/react'
-import { ShoppingCartIcon, TrashIcon } from 'lucide-react'
-import { useCart } from '@/hooks/v2/use-cart'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger
 } from '@/components/ui/hover-card'
-import { Link as RouterLink } from 'react-router-dom'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useCart } from '@/hooks/use-cart'
+import { Button, Divider } from '@nextui-org/react'
+import { ShoppingCartIcon, TrashIcon } from 'lucide-react'
+import { Link as RouterLink } from 'react-router-dom'
 
 export function CartDropdown() {
   const { totalItems, cart, removeItem, totalPrice } = useCart()

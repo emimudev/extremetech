@@ -1,4 +1,4 @@
-import { LoginRequest, LoginResponse, SignupRequest, TokenResponse, User } from '@/types/v2'
+import { LoginRequest, LoginResponse, SignupRequest, TokenResponse, User } from '@/types'
 import axios from 'axios'
 import { AxiosAPIResponse, buildEndpoint, securedAPI, setGlobalAccessToken } from './config'
 

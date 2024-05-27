@@ -1,4 +1,4 @@
-import { useAuth } from '@/hooks/v2/use-auth'
+import { useAuth } from '@/hooks/use-auth'
 import { Input } from '@nextui-org/react'
 import { formatRelative } from 'date-fns'
 

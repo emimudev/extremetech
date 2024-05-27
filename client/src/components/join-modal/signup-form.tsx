@@ -1,3 +1,11 @@
+import { useJoinModalWrite } from '@/atoms/join-modal-atom'
+import { useAuth } from '@/hooks/use-auth'
+import { APIResponse } from '@/types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Divider, Input } from '@nextui-org/react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import {
   Form,
   FormControl,
@@ -6,14 +14,6 @@ import {
   FormLabel,
   FormMessage
 } from '../ui/form'
-import { Button, Divider, Input } from '@nextui-org/react'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { useAuth } from '@/hooks/v2/use-auth'
-import { APIResponse } from '@/types/v2'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useJoinModalWrite } from '@/atoms/join-modal'
-import { useState } from 'react'
 
 const formSchema = z
   .object({

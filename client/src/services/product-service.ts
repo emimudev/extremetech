@@ -1,9 +1,9 @@
-import { PageResult, Product } from '@/types/v2'
-import { AxiosAPIResponse, buildEndpoint } from './config'
+import { PageResult, Product } from '@/types'
+import { KeyValuePairList } from '@/types/key-value-pair-list'
+import { ProductFiltersRequest } from '@/types/product-filters-request'
+import { ProductFiltersResponse } from '@/types/product-filters-response'
 import axios from 'axios'
-import { ProductFiltersRequest } from '@/types/v2/product-filters-request'
-import { ProductFiltersResponse } from '@/types/v2/product-filters-response'
-import { KeyValuePairList } from '@/types/v2/key-value-pair-list'
+import { AxiosAPIResponse, buildEndpoint } from './config'
 
 export interface FindProductsByFiltersParams {
   categoryCode: string

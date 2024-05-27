@@ -1,6 +1,6 @@
-import { Cart, CartItem } from '@/types/v2'
-import { AxiosAPIResponse, securedAPI, buildEndpoint } from './config'
-import { CartItemRequest } from '@/types/v2/cart-item-request'
+import { Cart, CartItem } from '@/types'
+import { CartItemRequest } from '@/types/cart-item-request'
+import { AxiosAPIResponse, buildEndpoint, securedAPI } from './config'
 
 async function getMyCart() {
   const response: AxiosAPIResponse<Cart> = await securedAPI.get(

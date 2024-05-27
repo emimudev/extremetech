@@ -1,4 +1,4 @@
-import { useJoinModal } from '@/atoms/join-modal'
+import { useJoinModal } from '@/atoms/join-modal-atom'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Drawer, DrawerContent } from '@/components/ui/drawer'

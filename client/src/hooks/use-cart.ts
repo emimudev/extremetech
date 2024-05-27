@@ -2,12 +2,12 @@ import {
   LOCAL_CART_KEY,
   defaultAnonymousCart,
   useCartAtom
-} from '@/atoms/v2/cart-atom'
-import { useCallback, useEffect } from 'react'
-import { useAuth } from './use-auth'
-import { Cart, CartItem, Product } from '@/types/v2'
-import useSWR from 'swr'
+} from '@/atoms'
 import { CartService } from '@/services/cart-service'
+import { Cart, CartItem, Product } from '@/types'
+import { useCallback, useEffect } from 'react'
+import useSWR from 'swr'
+import { useAuth } from './use-auth'
 
 export function useCart() {
   const [cart, setCart] = useCartAtom()

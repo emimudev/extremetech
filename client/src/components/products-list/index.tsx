@@ -1,16 +1,16 @@
-import useSWR from 'swr'
 import Product from '@/components/product'
-import EmptyState from '../empty-state'
-import { Pagination, PaginationItem, Skeleton } from '@nextui-org/react'
-import { useSearchParams } from 'react-router-dom'
+import { cn } from '@/lib/utils'
 import {
   FindProductsByFiltersParams,
   ProductService
 } from '@/services/product-service'
-import { cn } from '@/lib/utils'
+import { KeyValuePairList } from '@/types/key-value-pair-list'
+import { Pagination, PaginationItem, Skeleton } from '@nextui-org/react'
+import { useSearchParams } from 'react-router-dom'
+import useSWR from 'swr'
 import { DelayedRender } from '../delayed-render'
+import EmptyState from '../empty-state'
 import './index.scss'
-import { KeyValuePairList } from '@/types/v2/key-value-pair-list'
 
 const INITIAL_PAGE = 1
 const INITIAL_PAGE_SIZE = 10

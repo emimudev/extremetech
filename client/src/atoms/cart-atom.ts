@@ -1,4 +1,4 @@
-import { Cart } from '@/types/v2'
+import { Cart } from '@/types'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { defaultAnonymousUser } from './auth-atom'
 

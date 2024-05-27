@@ -1,19 +1,21 @@
-export interface IProduct {
-  id: number | string
+import { Brand } from './brand'
+import { Category } from './category'
+import { Offer } from './offer'
+import { AttributeValue } from './attribute-value'
+
+export interface Product {
+  id: string
+  code: string
   name: string
-  description?: string
+  description?: string | null
   price: number
-  offer?: {
-    discount: number
-    expiresAt?: string
-  }
-  images: string[]
-  category: string
-  brand: string
-  rating?: number
-  numReviews?: number
+  offer?: Offer | null
+  brand: Brand
+  category: Category
   stock: number
-  createdAt?: string
-  updatedAt?: string
-  features: Record<string, string|number|string[]>
+  images: string[]
+  createdAt: string
+  isOnSale: boolean
+  attributes: AttributeValue[]
+  features: Record<string, string | number | string[]>
 }

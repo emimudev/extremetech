@@ -1,11 +1,11 @@
-import { LucideHeart, ShoppingCartIcon } from 'lucide-react'
+import { useJoinModal } from '@/atoms'
+import { useAuth } from '@/hooks/use-auth'
+import { useCart } from '@/hooks/use-cart'
+import { Product as ProductType } from '@/types'
 import { Button, Chip, Divider } from '@nextui-org/react'
+import { LucideHeart, ShoppingCartIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import AddProductToCart from '../add-product-cart'
-import { Product as ProductType } from '@/types/v2'
-import { useCart } from '@/hooks/v2/use-cart'
-import { useAuth } from '@/hooks/v2/use-auth'
-import { useJoinModal } from '@/atoms'
 
 export interface ProductProps {
   product: ProductType

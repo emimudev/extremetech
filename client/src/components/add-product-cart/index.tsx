@@ -1,9 +1,9 @@
+import { useCart } from '@/hooks/use-cart'
+import { Product } from '@/types'
 import { Button, ButtonProps, Spinner } from '@nextui-org/react'
 import { CheckCircle2 } from 'lucide-react'
-import { toast } from 'sonner'
-import { useCart } from '@/hooks/v2/use-cart'
-import { Product } from '@/types/v2'
 import { useState } from 'react'
+import { toast } from 'sonner'
 import { DelayedRender } from '../delayed-render'
 
 export interface AddProductToCartProps extends ButtonProps {

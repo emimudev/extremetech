@@ -1,5 +1,5 @@
 import { useJoinModalWrite } from '@/atoms'
-import { useAuth } from '@/hooks/v2/use-auth'
+import { useAuth } from '@/hooks/use-auth'
 import {
   Button,
   Link,
@@ -11,8 +11,8 @@ import { useRef } from 'react'
 import Spacer from '../../components/ui/spacer'
 import useIsMobile from '../../hooks/use-is-mobile'
 import UserAvatar from '../user-avatar'
-import { NavbarMenu } from './navbar-menu'
 import { CartDropdown } from './cart-dropdown'
+import { NavbarMenu } from './navbar-menu'
 
 export default function Navbar() {
   const ref = useRef<HTMLElement | null>(null)

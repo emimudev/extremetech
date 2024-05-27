@@ -1,5 +1,5 @@
-import { User } from '@/types/v2'
-import { LoginResponse } from '@/types/v2/login-response'
+import { User } from '@/types'
+import { LoginResponse } from '@/types/login-response'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithDefault } from 'jotai/utils'
 

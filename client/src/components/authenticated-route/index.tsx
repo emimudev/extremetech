@@ -1,4 +1,4 @@
-import { useAuth } from '@/hooks/v2/use-auth'
+import { useAuth } from '@/hooks/use-auth'
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 

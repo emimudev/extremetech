@@ -1,5 +1,8 @@
-export interface ICategory {
-  id: string
+import { Attribute } from './attribute'
+
+export interface Category {
+  id: number
+  code: string
   name: string
-  parent: string | null
+  attributes: Attribute[]
 }

@@ -1,7 +1,7 @@
+import { PRIVATE_ROLES, useAuth } from '@/hooks/use-auth'
+import { RoleType } from '@/types'
 import type { ReactNode } from 'react'
-import { PRIVATE_ROLES, useAuth } from '@/hooks/v2/use-auth'
 import { Navigate } from 'react-router-dom'
-import { RoleType } from '@/types/v2'
 
 export function PrivateRoute({
   children,

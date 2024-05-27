@@ -1,4 +1,4 @@
-import { useAuth } from '@/hooks/v2/use-auth'
+import { useAuth } from '@/hooks/use-auth'
 import { Avatar, Divider, Tab, Tabs } from '@nextui-org/react'
 import { HeartIcon, HistoryIcon, UserIcon } from 'lucide-react'
 import { Outlet, useLocation } from 'react-router-dom'

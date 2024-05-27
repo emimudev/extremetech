@@ -1,6 +1,6 @@
 import { useJoinModal } from '@/atoms'
-import { useAuth } from '@/hooks/v2/use-auth'
-import { useCart } from '@/hooks/v2/use-cart'
+import { useAuth } from '@/hooks/use-auth'
+import { useCart } from '@/hooks/use-cart'
 import { BreadcrumbItem, Breadcrumbs, Button, Divider } from '@nextui-org/react'
 import { ShoppingCart, Trash2Icon } from 'lucide-react'
 import { Link } from 'react-router-dom'

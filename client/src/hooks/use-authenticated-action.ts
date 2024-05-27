@@ -1,13 +1,13 @@
 import { useJoinModalWrite } from '@/atoms'
-import useAuth from './use-auth'
+import { useAuth } from './use-auth'
 
 export interface UseAuthenticationActionProps<T extends (...args: any) => any> {
   action: () => ReturnType<T>
 }
 
-export default function useAuthenticatedAction<
-  T extends (...args: any) => any
->(props: UseAuthenticationActionProps<T>) {
+export default function useAuthenticatedAction<T extends (...args: any) => any>(
+  props: UseAuthenticationActionProps<T>
+) {
   const { isAuthenticated } = useAuth()
   const { openModal } = useJoinModalWrite()
   const { action } = props

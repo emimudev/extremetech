@@ -1,9 +1,9 @@
-import { useAuthAtom } from '@/atoms/v2/auth-atom'
-import { LOCAL_CART_KEY, useCartSetAtom } from '@/atoms/v2/cart-atom'
+import { useAuthAtom } from '@/atoms/auth-atom'
+import { LOCAL_CART_KEY, useCartSetAtom } from '@/atoms/cart-atom'
 import { AuthService } from '@/services/auth-service'
 import { CartService } from '@/services/cart-service'
-import { Cart } from '@/types/v2'
-import { CartItemRequest } from '@/types/v2/cart-item-request'
+import { Cart } from '@/types'
+import { CartItemRequest } from '@/types/cart-item-request'
 import { createContext, useEffect, useMemo, useState } from 'react'
 
 export interface AuthContextType {

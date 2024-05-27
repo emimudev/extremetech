@@ -1,16 +1,16 @@
-import { ICategory } from '@/types'
-import { Checkbox, Divider } from '@nextui-org/react'
-import ClearFiltersButton from './clear-filters-button'
-import { useSearchParams } from 'react-router-dom'
-import useSWR from 'swr'
 import {
   GetProductFiltersParams,
   ProductService
 } from '@/services/product-service'
+import { ICategory } from '@/types'
+import { KeyValuePairList } from '@/types/key-value-pair-list'
 import { existSearchParam } from '@/utils/search-params'
-import { KeyValuePairList } from '@/types/v2/key-value-pair-list'
-import { productsIgnoreKnownParams } from '../products-list'
+import { Checkbox, Divider } from '@nextui-org/react'
+import { useSearchParams } from 'react-router-dom'
+import useSWR from 'swr'
 import { DelayedRender } from '../delayed-render'
+import { productsIgnoreKnownParams } from '../products-list'
+import ClearFiltersButton from './clear-filters-button'
 
 export interface ProductsFiltersProps {
   category: ICategory | undefined | null

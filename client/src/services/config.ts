@@ -1,5 +1,5 @@
-import { LoginResponse } from '@/types/v2'
-import { APIResponse } from '@/types/v2/api-response'
+import { LoginResponse } from '@/types'
+import { APIResponse } from '@/types/api-response'
 import axios, { AxiosResponse } from 'axios'
 
 export const securedAPI = axios.create()
