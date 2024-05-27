@@ -1,16 +1,12 @@
 package com.kg.extremetech.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kg.extremetech.dtos.KeyValuePair;
 import com.kg.extremetech.dtos.ProductFiltersRequestDTO;
 import com.kg.extremetech.dtos.ProductResponseDTO;
 import com.kg.extremetech.responses.Response;
 import com.kg.extremetech.services.ProductService;
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

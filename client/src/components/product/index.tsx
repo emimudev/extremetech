@@ -1,11 +1,11 @@
-import { useJoinModal } from '@/atoms'
-import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/hooks/use-cart'
 import { Product as ProductType } from '@/types'
 import { Button, Chip, Divider } from '@nextui-org/react'
 import { LucideHeart, ShoppingCartIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import AddProductToCart from '../add-product-cart'
+import { useWishList } from '@/hooks/use-wish-list'
+import { cn } from '@/lib/utils'
 
 export interface ProductProps {
   product: ProductType
@@ -14,14 +14,20 @@ export interface ProductProps {
 export default function Product({ product }: ProductProps) {
   const { category, offer, images, price, name } = product
   const { searchProduct } = useCart()
-  const { isAuthenticated } = useAuth()
-  const { openModal } = useJoinModal()
+  const {
+    isProductInWishList: searchProductInWishList,
+    addToWishList,
+    removeFromWishList
+  } = useWishList()
   const productInCart = searchProduct(product)
 
-  const handleAddToWishlist = () => {
-    if (isAuthenticated) {
+  const isProductInWishList = searchProductInWishList(product.id)
+
+  const toggleWishListItem = (product: ProductType) => {
+    if (isProductInWishList) {
+      removeFromWishList(product)
     } else {
-      openModal()
+      addToWishList(product)
     }
   }
 
@@ -97,6 +103,7 @@ export default function Product({ product }: ProductProps) {
         <Divider />
         <div className='flex items-center gap-2 px-4 py-3 flex-[0_0_auto]'>
           <AddProductToCart
+            type='submit'
             size='sm'
             radius='sm'
             variant='flat'
@@ -108,15 +115,19 @@ export default function Product({ product }: ProductProps) {
           </AddProductToCart>
           <div className='flex items-center gap-1.5'>
             <Button
+              type='submit'
               size='sm'
               radius='sm'
               isIconOnly
               variant='flat'
               className='dark:bg-[#71717A]/40 p-1.5 text-sm'
               aria-label='Add to wishlist'
-              onClick={handleAddToWishlist}
+              onClick={() => toggleWishListItem(product)}
             >
-              <LucideHeart />
+              <LucideHeart
+                fill={isProductInWishList ? 'currentColor' : 'transparent'}
+                className={cn(isProductInWishList && 'text-primary-500')}
+              />
             </Button>
           </div>
         </div>

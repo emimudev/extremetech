@@ -8,12 +8,6 @@ import com.kg.extremetech.dtos.ProductFiltersRequestDTO;
 import com.kg.extremetech.responses.Response;
 import com.kg.extremetech.services.AttributeService;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;

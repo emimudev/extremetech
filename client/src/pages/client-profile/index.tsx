@@ -8,7 +8,7 @@ export default function ClientProfilePage() {
   if (!user) return null
 
   return (
-    <div className='flex flex-col gap-6 mb-16'>
+    <div className='flex flex-col gap-6 pb-16'>
       <div className='flex flex-wrap gap-4'>
         <Input
           label='Name'
@@ -43,7 +43,7 @@ export default function ClientProfilePage() {
           value={user.email}
         />
         <Input
-          label='Joined At'
+          label='Joined'
           labelPlacement='outside'
           className='flex-[1_1_220px]'
           classNames={{
@@ -51,7 +51,8 @@ export default function ClientProfilePage() {
           }}
           isReadOnly
           value={
-            formatRelative(user.createdAt, new Date())
+            formatRelative(user.createdAt, new Date()).charAt(0).toUpperCase() +
+            formatRelative(user.createdAt, new Date()).slice(1)
           }
         />
       </div>

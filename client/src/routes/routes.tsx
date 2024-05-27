@@ -1,14 +1,16 @@
 import { lazy } from 'react'
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import RouterRoot from './router-root'
+import { AuthenticatedRoute } from '@/components/authenticated-route'
+import Layout from '@/components/layout'
 
 const ProductsPage = lazy(() => import('@/pages/products'))
 const HomePage = lazy(() => import('@/pages/home'))
-const Layout = lazy(() => import('@/components/layout'))
 const ProductDetails = lazy(() => import('@/pages/product-details'))
 const ClientSettingsPage = lazy(() => import('@/pages/client-settings'))
 const ClientProfilePage = lazy(() => import('@/pages/client-profile'))
 const ShoppingCartPage = lazy(() => import('@/pages/shopping-cart'))
+const WishListPage = lazy(() => import('@/pages/wish-list'))
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -36,11 +38,19 @@ export const AppRoutes = createBrowserRouter([
           // { path: 'checkout', element: <CheckoutPage /> },
           {
             path: 'me',
-            element: <ClientSettingsPage />,
+            element: (
+              <AuthenticatedRoute>
+                <ClientSettingsPage />
+              </AuthenticatedRoute>
+            ),
             children: [
               {
                 path: '/me',
                 element: <ClientProfilePage />
+              },
+              {
+                path: '/me/wishlist',
+                element: <WishListPage />
               }
             ]
           },

@@ -12,17 +12,11 @@ import com.kg.extremetech.entitites.QAttribute;
 import com.kg.extremetech.entitites.QAttributeValue;
 import com.kg.extremetech.entitites.QCategory;
 import com.kg.extremetech.entitites.QProduct;
-import com.kg.extremetech.repositories.AttributeRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import jakarta.persistence.EntityManager;
 
 @Service
 @Transactional
 public class AttributeService {
-
-  @Autowired
-  private AttributeRepository attributeRepository;
 
   @Autowired
   private JPAQueryFactory queryFactory;

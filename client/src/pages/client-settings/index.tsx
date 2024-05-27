@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/use-auth'
 import { Avatar, Divider, Tab, Tabs } from '@nextui-org/react'
 import { HeartIcon, HistoryIcon, UserIcon } from 'lucide-react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 export default function ClientSettingsPage() {
   const { user } = useAuth()
@@ -11,12 +11,16 @@ export default function ClientSettingsPage() {
   if (!user) return null
 
   return (
-    <div>
+    <div className='main-padding'>
       <header className='relative'>
-        <div className='min-h-[120px] bg-red-200 bg-gradient-to-r from-fuchsia-600 to-pink-600 opacity-50' />
-        <div className='absolute main-padding lg:p-0 left-1/2 -translate-x-1/2 rigt-0 max-w-screen-lg m-auto bottom-0 translate-y-1/2 md:translate-y-[70%] w-full'>
+        <div className='-mx-[4%] min-h-[120px] bg-red-200 bg-gradient-to-r from-fuchsia-600 to-pink-600 opacity-50' />
+        <div className='absolute lg:p-0 left-1/2 -translate-x-1/2 rigt-0 max-w-screen-lg m-auto bottom-0 translate-y-1/2 md:translate-y-[70%] w-full '>
           <div className='flex gap-6'>
             <Avatar
+              name={user.fullName}
+              classNames={{
+                name: 'uppercase md:text-5xl'
+              }}
               icon={<UserIcon className='h-6 w-6 md:w-14 md:h-14' />}
               isBordered
               color='primary'
@@ -34,14 +38,17 @@ export default function ClientSettingsPage() {
           </div>
         </div>
       </header>
-      <div className='max-w-screen-lg main-padding lg:p-0 m-auto mt-10 md:mt-28'>
+      <div className='max-w-screen-lg lg:p-0 m-auto mt-10 md:mt-28'>
         <h1 className='md:hidden text-lg line-clamp-1 font-semibold mb-4'>
           {user.fullName}
         </h1>
         <div className='overflow-hidden'>
           <Tabs selectedKey={pathname} radius='full' variant='underlined'>
             <Tab
-              href='/me'
+              as={Link}
+              // @ts-expect-error href is not a valid prop
+              to='/me'
+              // href='/me'
               key='/me'
               title={
                 <span className='flex gap-2 items-center'>
@@ -51,8 +58,10 @@ export default function ClientSettingsPage() {
               }
             />
             <Tab
-              href='/wishlist'
-              key='/wishlist'
+              as={Link}
+              // @ts-expect-error href is not a valid prop
+              to='/me/wishlist'
+              key='/me/wishlist'
               title={
                 <span className='flex gap-2 items-center'>
                   <HeartIcon fill='currentColor' size={16} />

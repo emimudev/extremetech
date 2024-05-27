@@ -10,9 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kg.extremetech.dtos.*;
 import com.kg.extremetech.entitites.*;
-import com.kg.extremetech.entitites.keys.ProductAttributeValue;
 import com.kg.extremetech.repositories.*;
-import com.kg.extremetech.services.CartService;
+import com.kg.extremetech.services.UserService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
 
 @Component
 public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
@@ -39,7 +36,7 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
   private ProductRepository productRepository;
 
   @Autowired
-  private CartService cartService;
+  private UserService userService;
 
   @Override
   @Transactional
@@ -93,8 +90,7 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         .password(passwordEncoder.encode(userDto.password))
         .role(optionalRole.get())
         .build();
-    var userSaved = userRepository.save(user);
-    cartService.createCart(userSaved);
+    userService.createUser(user);
   }
 
   private void loadDefaultUsers() {
@@ -110,8 +106,7 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         .password(passwordEncoder.encode("123456"))
         .role(roleRepository.findByType(RoleType.CLIENT).get())
         .build();
-    final var savedUser = userRepository.save(user);
-    cartService.createCart(savedUser);
+    userService.createUser(user);
   }
 
   private void loadBrands() {

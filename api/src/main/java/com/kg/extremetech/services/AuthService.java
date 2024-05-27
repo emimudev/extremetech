@@ -23,6 +23,9 @@ import java.util.Optional;
 @Service
 @Transactional
 public class AuthService {
+
+  @Autowired
+  private UserService userService;
   @Autowired
   private UserRepository userRepository;
   @Autowired
@@ -48,7 +51,7 @@ public class AuthService {
       .fullName(input.name + " " + input.lastname)
       .build();
 
-    return userRepository.save(user);
+    return userService.createUser(user);
   }
 
   public User authenticate(LoginRequestDTO input) {

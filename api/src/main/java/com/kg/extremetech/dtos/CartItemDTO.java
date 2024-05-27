@@ -3,7 +3,6 @@ package com.kg.extremetech.dtos;
 import java.util.Date;
 
 import com.kg.extremetech.entitites.CartItem;
-import com.kg.extremetech.entitites.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

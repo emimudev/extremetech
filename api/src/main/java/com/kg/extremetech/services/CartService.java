@@ -6,16 +6,13 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
-import com.kg.extremetech.dtos.CartItemDTO;
 import com.kg.extremetech.dtos.CartItemRequestDTO;
 import com.kg.extremetech.entitites.Cart;
 import com.kg.extremetech.entitites.CartItem;
 import com.kg.extremetech.entitites.User;
 import com.kg.extremetech.repositories.CartItemRepository;
 import com.kg.extremetech.repositories.CartRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.transaction.Transactional;
 

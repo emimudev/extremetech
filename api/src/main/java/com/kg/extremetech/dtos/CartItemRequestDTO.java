@@ -1,6 +1,5 @@
 package com.kg.extremetech.dtos;
 
-import com.kg.extremetech.entitites.CartItem;
 import com.kg.extremetech.entitites.Product;
 
 import lombok.AllArgsConstructor;
