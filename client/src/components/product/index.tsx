@@ -1,38 +1,31 @@
 import { LucideHeart, ShoppingCartIcon } from 'lucide-react'
-// import { IProduct } from '../../types'
 import { Button, Chip, Divider } from '@nextui-org/react'
 import { Link } from 'react-router-dom'
 import AddProductToCart from '../add-product-cart'
-import { useShoppingCart } from '@/atoms'
-import { Product as IProduct } from '@/types/v2'
-
-// export interface ProductProps {
-//   product: Partial<IProduct>
-// }
+import { Product as ProductType } from '@/types/v2'
+import { useCart } from '@/hooks/v2/use-cart'
 
 export interface ProductProps {
-  product: IProduct
+  product: ProductType
 }
 
 export default function Product({ product }: ProductProps) {
   const { category, offer, images, price, name } = product
-  // const { searchProductInCart } = useShoppingCart()
-  // const { name, price, category, images, offer } = product
-  // const { discount } = offer || {}
-  // const productInCart = searchProductInCart(product as IProduct)
+  const { searchProduct } = useCart()
+  const productInCart = searchProduct(product)
 
   return (
     <div className='product-item bg-white/[5%] backdrop-saturate-200 backdrop-blur-3xl flex flex-col rounded-xl border-white/[6%] border [&:hover_img]:scale-[1.02] [&:_.price]:shadow-black overflow-hidden flex-auto'>
-      <Link to={`/products/${category.code}/${product.id}`}>
+      <Link to={`/products/${category.code}/${product.code}`}>
         <header className='flex-[0_0_auto] hover:bg-black/[40%] cursor-pointer aspect-video flex justify-center items-center relative bg-black/[60%] overflow-hidden p-4'>
-          {/* {productInCart && (
+          {productInCart && (
             <div className='absolute bottom-3 left-0 text-xs font-semibold dark:text-white px-3 py-0.5 rounded-tr-xl rounded-br-xl z-10 bg-gradient-to-br bg-accent'>
               <div className='flex gap-2 items-center py-0.5'>
                 <ShoppingCartIcon className='w-4 h-4'></ShoppingCartIcon>
                 {productInCart.quantity}
               </div>
             </div>
-          )} */}
+          )}
           {offer && (
             <div className='absolute top-0 left-1/2 -translate-x-1/2 text-xs font-semibold dark:text-white px-3 py-0.5 rounded-bl-xl rounded-br-xl z-10 bg-gradient-to-br from-rose-700 to-pink-500'>
               {offer.discount}% OFF
@@ -96,7 +89,7 @@ export default function Product({ product }: ProductProps) {
             size='sm'
             radius='sm'
             variant='flat'
-            product={product as IProduct}
+            product={product as ProductType}
             fullWidth
             className='dark:bg-[#71717A]/25 text-sm'
           >

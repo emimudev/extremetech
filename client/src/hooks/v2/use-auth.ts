@@ -1,30 +1,49 @@
 import { useAuthAtom } from '@/atoms/v2/auth-atom'
+import { defaultAnonymousCart, useCartSetAtom } from '@/atoms/v2/cart-atom'
 import { AuthService } from '@/services/auth-service'
-import { LoginRequest } from '@/types/v2'
+import { LoginRequest, SignupRequest } from '@/types/v2'
 import { useCallback, useMemo } from 'react'
 
 export function useAuth() {
   const [auth, setAuth] = useAuthAtom()
+  const setCart = useCartSetAtom()
 
   const login = useCallback(
     (values: LoginRequest) => {
       if (auth) return Promise.resolve(auth)
-      return AuthService.login(values).then((res) => {
-        console.log({ res })
-        // localStorage.setItem('auth', JSON.stringify(res))
-        setAuth(res)
-        return res
-      }).catch((error) => {
-        console.log({ error })
-        throw error?.response?.data
-      })
+      return AuthService.login(values)
+        .then((res) => {
+          setAuth(res)
+          return res
+        })
+        .catch((error) => {
+          console.log({ error })
+          throw error?.response?.data
+        })
     },
     [setAuth, auth]
   )
 
   const logout = useCallback(() => {
     setAuth(null)
-  }, [setAuth])
+    setCart(defaultAnonymousCart)
+  }, [setAuth, setCart])
+
+  const signup = useCallback(
+    (values: SignupRequest) => {
+      return AuthService.signup(values)
+        .then((res) => {
+          console.log('useAuth', { res })
+          setAuth(res)
+          return res
+        })
+        .catch((error) => {
+          console.log('useAuthError', { error })
+          throw error?.response?.data
+        })
+    },
+    [setAuth]
+  )
 
   const currentUser = useMemo(() => auth?.user, [auth])
 
@@ -32,6 +51,7 @@ export function useAuth() {
     isAuthenticated: auth && auth.user,
     user: currentUser,
     login,
+    signup,
     logout
   }
 }

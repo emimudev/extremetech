@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Attribute {
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   @Column(nullable = false)
   private String name;
   @Column(nullable = false)

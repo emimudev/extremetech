@@ -1,12 +1,10 @@
-import { Button, ButtonProps } from '@nextui-org/react'
+import { Button, ButtonProps, Spinner } from '@nextui-org/react'
 import { CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useCart } from '@/hooks/v2/use-cart'
 import { Product } from '@/types/v2'
-
-// export interface AddProductToCartProps extends ButtonProps {
-//   product: IProduct
-// }
+import { useState } from 'react'
+import { DelayedRender } from '../delayed-render'
 
 export interface AddProductToCartProps extends ButtonProps {
   product: Product
@@ -18,32 +16,45 @@ export default function AddProductToCart({
   ...buttonProps
 }: AddProductToCartProps) {
   const { addItem } = useCart()
-  // const { setShoppingCart } = useShoppingCartWrite()
-  // const handleAddToCart = useAuthenticatedAction({
-  //   action: () => {
-  //     setShoppingCart({ type: 'add', value: product })
-  //     toast.success(
-  //       <span className='flex items-center gap-2'>
-  //         <CheckCircle2 className='w-4 h-4'></CheckCircle2>
-  //         <span className='font-bold'>{product.name}</span> has been added to
-  //         cart
-  //       </span>
-  //     )
-  //   }
-  // })
+  const [isAdding, setIsAdding] = useState(false)
 
   const addToCart = () => {
+    if (!product.isOnSale) {
+      toast.error(
+        <span className='flex items-center gap-2'>
+          <CheckCircle2 className='w-4 h-4'></CheckCircle2>
+          <span className='font-bold'>{product.name}</span> is not available
+        </span>
+      )
+      return
+    }
+    setIsAdding(true)
     addItem({ product, quantity: 1 })
-    toast.success(
-      <span className='flex items-center gap-2'>
-        <CheckCircle2 className='w-4 h-4'></CheckCircle2>
-        <span className='font-bold'>{product.name}</span> has been added to cart
-      </span>
-    )
+      .then(() => {
+        toast.success(
+          <span className='flex items-center gap-2'>
+            <CheckCircle2 className='w-4 h-4'></CheckCircle2>
+            <span className='font-bold'>{product.name}</span> has been added to
+            cart
+          </span>
+        )
+      })
+      .finally(() => {
+        setIsAdding(false)
+      })
   }
 
   return (
-    <Button onClick={addToCart} {...buttonProps}>
+    <Button
+      isLoading={isAdding}
+      spinner={
+        <DelayedRender>
+          <Spinner size='sm' color='current'></Spinner>
+        </DelayedRender>
+      }
+      onClick={addToCart}
+      {...buttonProps}
+    >
       {children}
     </Button>
   )

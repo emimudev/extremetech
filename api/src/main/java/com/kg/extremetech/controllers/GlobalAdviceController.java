@@ -1,5 +1,6 @@
 package com.kg.extremetech.controllers;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
@@ -64,7 +65,7 @@ public class GlobalAdviceController {
   }
 
   @ExceptionHandler({ DuplicateKeyException.class, DataIntegrityViolationException.class })
-  public ResponseEntity<Response<Object>> handle(DuplicateKeyException e) {
+  public ResponseEntity<Response<Object>> handle(DataIntegrityViolationException e) {
     try {
       final var pattern = Pattern.compile("(\\w+):\\s*\\\"(.*)\\\"", Pattern.CASE_INSENSITIVE);
       final var matcher = pattern.matcher(e.getMessage());

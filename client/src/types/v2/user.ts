@@ -1,3 +1,5 @@
+import { Role } from './role'
+
 export interface User {
   id: string
   name: string
@@ -5,7 +7,7 @@ export interface User {
   fullName: string
   email: string
   createdAt: string
-  role: string
+  role: Role
   isEnabled: boolean
   isLocked: boolean
 }

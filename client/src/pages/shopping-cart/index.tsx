@@ -1,38 +1,15 @@
-import { useShoppingCart } from '@/atoms'
-import useAuth from '@/hooks/use-auth'
-import { IProduct } from '@/types'
+import { useJoinModal } from '@/atoms'
+import { useAuth } from '@/hooks/v2/use-auth'
+import { useCart } from '@/hooks/v2/use-cart'
 import { BreadcrumbItem, Breadcrumbs, Button, Divider } from '@nextui-org/react'
 import { ShoppingCart, Trash2Icon } from 'lucide-react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function ShoppingCartPage() {
-  const { user } = useAuth()
-  const { items, setShoppingCart } = useShoppingCart()
-
-  const handleRemoveItem = (product: IProduct) => {
-    setShoppingCart({
-      type: 'remove',
-      value: product
-    })
-  }
-
-  const handleAddMore = (product: IProduct) => {
-    setShoppingCart({
-      type: 'add',
-      value: product
-    })
-  }
-
-  const handleRemoveOne = (product: IProduct) => {
-    setShoppingCart({
-      type: 'remove-one',
-      value: product
-    })
-  }
-
-  if (!user) {
-    return <Navigate to='/' />
-  }
+  const { isAuthenticated } = useAuth()
+  const { openModal } = useJoinModal()
+  const { cart, cleanCart, addItem, removeItem } = useCart()
+  const { items } = cart
 
   return (
     <div className='min-h-[calc(100vh-var(--navbar-height))] flex flex-col'>
@@ -60,61 +37,61 @@ export default function ShoppingCartPage() {
           Shopping Cart
         </h1>
       </div>
-      {items.length > 0 && (
-        <div className='md:main-padding grid grid-cols-12 mt-8 gap-4'>
+      <div className='md:main-padding grid grid-cols-12 mt-8 gap-8'>
+        {items.length > 0 && (
           <div className='col-span-12 lg:col-span-8 h-fit lg:mb-10'>
             <ul className='flex flex-col gap-4 border-accent/30 '>
-              {items.map(({ product, quantity, id }) => (
+              {items.map((item) => (
                 <li
-                  key={id}
-                  className='bg-accent/20  flex gap-2 rounded-xl md:rounded-2xl aspect-video items-center justify-between border-accent main-padding !py-3 md:py-3 md:px-4 max-h-[160px]'
+                  key={item.id}
+                  className='bg-accent/20  flex gap-2 rounded-xl md:rounded-2xl items-center justify-between border-accent main-padding !py-3 md:py-3 md:px-4 max-h-[160px]'
                 >
                   <div className='flex flex-1 gap-4 h-full'>
-                    <div className='flex p-2 max-h-[80px] md:max-h-full items-center bg-accent/40 rounded-xl overflow-hidden'>
+                    <div className='flex-[0_0_80px] h-fit md:flex-[0_0_120px] flex p-2 items-center bg-accent/40 rounded-xl overflow-hidden'>
                       <Link
-                        className='aspect-square w-full h-full'
-                        to={`/products/${product.category}/${product.id}`}
+                        className='w-auto'
+                        to={`/products/${item.product.category.code}/${item.product.code}`}
                       >
                         <img
                           className='w-full h-full object-cover'
-                          src={product.images?.[0]}
-                          alt={product.name}
+                          src={item.product.images?.[0]}
+                          alt={item.product.name}
                         />
                       </Link>
                     </div>
                     <div className='flex-1 py-1 flex flex-col'>
                       <h2 className='flex-[0_0_auto] text-foreground-strong text-sm md:text-base'>
                         <Link
-                          to={`/products/${product.category}/${product.id}`}
+                          to={`/products/${item.product.category.code}/${item.product.code}`}
                           className='hover:underline'
                         >
-                          {product.name}
+                          {item.product.name}
                         </Link>
                       </h2>
                       <div className='text-xs text-foreground-secondary mt-1 mb-3'>
                         <div className='line-clamp-2'>
-                          {Object.values(product.features || {})
+                          {Object.values(item.product.features || {})
                             .map((feature) => feature)
                             .join(' / ')}
                         </div>
                       </div>
                       <p className='text-foreground flex-[0_0_auto] text-sm flex items-center gap-2 mb-2'>
                         <span className='text-foreground-strong'>Price:</span> $
-                        {product.price}
+                        {item.product.price}
                       </p>
                       <div className='flex items-center justify-between'>
                         <div className='bg-accent flex gap-4 px-3  items-center rounded-full'>
                           <button
-                            onClick={() => handleRemoveOne(product)}
+                            onClick={() => removeItem(item)}
                             className='text-foreground-strong text-lg'
                           >
                             -
                           </button>
                           <span className='text-foreground-strong text-base'>
-                            {quantity}
+                            {item.quantity}
                           </span>
                           <button
-                            onClick={() => handleAddMore(product)}
+                            onClick={() => addItem({ ...item, quantity: 1 })}
                             className='text-foreground-strong text-lg'
                           >
                             +
@@ -123,7 +100,7 @@ export default function ShoppingCartPage() {
                         <Button
                           isIconOnly
                           size='sm'
-                          onClick={() => handleRemoveItem(product)}
+                          onClick={() => removeItem(item)}
                           startContent={
                             <Trash2Icon className='w-4 h-4'></Trash2Icon>
                           }
@@ -136,9 +113,43 @@ export default function ShoppingCartPage() {
               ))}
             </ul>
           </div>
-          <div className='col-span-12 lg:col-span-4 h-fit border-1 border-accent/20 bg-accent/20 rounded-xl md:rounded-2xl main-padding !py-6 md:!py-3 md:px-4 flex flex-col mb-10'>
-            <h2 className='text-lg'>Cart Summary</h2>
-            <Divider className='mt-2 mb-4'></Divider>
+        )}
+        {items.length === 0 && (
+          <div className='col-span-12 lg:col-span-8 h-fit lg:mb-10'>
+            <div className='main-padding flex flex-col my-10 items-center justify-center relative text-center'>
+              <div className='max-w-[6vw] w-full min-w-[4rem] text-foreground-muted/70'>
+                <ShoppingCart className='w-full h-full' />
+              </div>
+              <div className='text-foreground text-lg lg:text-2xl w-full text-center mt-6'>
+                You have not added anything to your cart
+              </div>
+              <div className='mt-3 text-foreground-muted'>
+                We have a wide variety of products, surely you will find what
+                you are looking for.
+              </div>
+              <Button
+                as={Link}
+                to={'/products/laptop'}
+                size='lg'
+                radius='full'
+                className='bg-primary/70 mt-6'
+              >
+                Let's go shopping
+              </Button>
+            </div>
+          </div>
+        )}
+        <div className='col-span-12 lg:col-span-4 h-fit border-1 border-accent/20 bg-accent/20 rounded-xl md:rounded-2xl main-padding !py-6 md:!py-3 md:px-4 flex flex-col mb-10'>
+          <div className='flex items-center justify-between'>
+            <h2 className='text-lg lg:text-xl'>Cart Summary</h2>
+            {cart.items.length > 0 && (
+              <Button size='sm' variant='light' onClick={cleanCart}>
+                Clear cart
+              </Button>
+            )}
+          </div>
+          <Divider className='mt-4 mb-4'></Divider>
+          {cart.items.length > 0 && (
             <ul className='flex flex-col'>
               {items.map(({ product, quantity, id }) => (
                 <li
@@ -159,48 +170,46 @@ export default function ShoppingCartPage() {
                 </li>
               ))}
             </ul>
-            <div className='flex gap-2 text-foreground-strong'>
-              Total:
-              <span className='text-foreground-muted'>
-                $
-                {items.reduce(
-                  (acc, { product, quantity }) =>
-                    acc + product.price * quantity,
-                  0
-                )}
-              </span>
+          )}
+          {items.length === 0 && (
+            <div className='text-foreground-muted mb-3'>
+              There is nothing to summarize as the shopping cart is empty.
             </div>
-            <Divider className='my-4'></Divider>
+          )}
+          <div className='flex gap-2 text-foreground-strong'>
+            Total:
+            <span className='text-foreground-muted'>
+              $
+              {items.reduce(
+                (acc, { product, quantity }) => acc + product.price * quantity,
+                0
+              )}
+            </span>
+          </div>
+          <Divider className='my-4'></Divider>
+          {isAuthenticated && (
             <Button
               as={Link}
+              disabled={!isAuthenticated}
               to={'/checkout'}
               color='primary'
               className='text-foreground-strong font-semibold bg-primary/70'
             >
               Go to Checkout
             </Button>
-          </div>
+          )}
+          {!isAuthenticated && (
+            <Button
+              isDisabled={cart.items.length === 0}
+              onClick={openModal}
+              color='primary'
+              className='text-foreground-strong font-semibold bg-primary/70'
+            >
+              Go to Checkout
+            </Button>
+          )}
         </div>
-      )}
-      {items.length === 0 && (
-        <div className='main-padding flex flex-col my-10 items-center justify-center relative text-center'>
-          <div className='max-w-[8vw] w-full min-w-[4rem] text-foreground-muted'>
-            <ShoppingCart className='w-full h-full' />
-          </div>
-          <div className='text-foreground text-lg lg:text-3xl w-full text-center mt-6'>
-            Your cart seems to be empty
-          </div>
-          <Button
-            as={Link}
-            to={'/products'}
-            size='lg'
-            radius='full'
-            className='bg-primary/70 mt-6'
-          >
-            Go back to the store
-          </Button>
-        </div>
-      )}
+      </div>
     </div>
   )
 }

@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CartItemDTO {
   private Long id;
-  private Product product;
+  private ProductResponseDTO product;
   private Integer quantity;
   private Date addedAt;
   public static CartItemDTO from(CartItem cartItem) {
     return CartItemDTO.builder()
       .id(cartItem.getId())
-      .product(cartItem.getProduct())
+      .product(ProductResponseDTO.from(cartItem.getProduct()))
       .quantity(cartItem.getQuantity())
       .addedAt(cartItem.getAddedAt())
       .build();

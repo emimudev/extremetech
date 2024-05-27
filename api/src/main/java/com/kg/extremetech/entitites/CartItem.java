@@ -11,13 +11,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -33,6 +36,7 @@ public class CartItem {
   private Integer quantity = 1;
   @JsonIgnore
   @ManyToOne(optional = false)
+  @JoinColumn(name = "cart_id", nullable = false)
   private Cart cart;
   @Column(nullable = false)
   @CreationTimestamp

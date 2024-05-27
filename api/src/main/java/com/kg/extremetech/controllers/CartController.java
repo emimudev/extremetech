@@ -4,9 +4,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kg.extremetech.dtos.CartDTO;
 import com.kg.extremetech.dtos.CartItemDTO;
+import com.kg.extremetech.dtos.CartItemRequestDTO;
 import com.kg.extremetech.entitites.User;
 import com.kg.extremetech.responses.Response;
 import com.kg.extremetech.services.CartService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,14 @@ public class CartController {
   @Autowired
   private CartService cartService;
 
+  @GetMapping
+  public ResponseEntity<?> findById() {
+    final var auth = SecurityContextHolder.getContext().getAuthentication();
+    User currentUser = (User) auth.getPrincipal();
+    System.out.println(currentUser);
+    return Response.of(() -> CartDTO.from(cartService.findByOwner(currentUser.getId())));
+  }
+
   @GetMapping("/{cartId}")
   public ResponseEntity<?> findById(@RequestParam String cartId) {
     return Response.of(() -> CartDTO.from(cartService.findById(cartId)));
@@ -36,25 +47,44 @@ public class CartController {
   }
 
   @GetMapping("/clean")
-  public ResponseEntity<?> clean(@RequestParam String cartId) {
+  public ResponseEntity<?> clean() {
     final var auth = SecurityContextHolder.getContext().getAuthentication();
     User currentUser = (User) auth.getPrincipal();
-    cartService.clean(currentUser, cartId);
-    return Response.ok();
+    return Response.of(() -> cartService.clean(currentUser));
   }
 
-  @PostMapping("/item")
-  public ResponseEntity<?> addItem(@RequestBody CartItemDTO cartItemDTO) {
+  // Lo mejor sería enviar un item y recibir el carrito completo actualizado
+  @PostMapping("/add/item")
+  public ResponseEntity<?> addItem(@RequestBody CartItemRequestDTO cartItemDTO) {
     final var auth = SecurityContextHolder.getContext().getAuthentication();
     User currentUser = (User) auth.getPrincipal();
     return Response.of(() -> cartService.addItem(currentUser, cartItemDTO));
+  }
+
+  // Lo mejor sería enviar un item y recibir el carrito completo actualizado
+  @PostMapping("/items")
+  public ResponseEntity<?> addItems(@RequestBody List<CartItemRequestDTO> cartItemsDTO) {
+    final var auth = SecurityContextHolder.getContext().getAuthentication();
+    User currentUser = (User) auth.getPrincipal();
+    return Response.of(() -> cartService.addItem(currentUser, cartItemsDTO)
+        .stream()
+        .map(CartItemDTO::from)
+        .toList());
+  }
+
+  @PostMapping("/removeOne/{itemId}")
+  public ResponseEntity<?> removeOneItemInCart(@PathVariable Long itemId) {
+    final var auth = SecurityContextHolder.getContext().getAuthentication();
+    User currentUser = (User) auth.getPrincipal();
+    cartService.removeOne(currentUser, itemId);
+    return Response.ok();
   }
 
   @DeleteMapping("/{cartId}/{itemId}")
   public ResponseEntity<?> deleteItem(@RequestParam String cartId, @RequestParam Long itemId) {
     final var auth = SecurityContextHolder.getContext().getAuthentication();
     User currentUser = (User) auth.getPrincipal();
-    cartService.deleteItem(currentUser, cartId, itemId);
+    cartService.deleteItem(currentUser, itemId);
     return Response.ok();
   }
 

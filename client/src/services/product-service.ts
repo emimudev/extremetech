@@ -13,7 +13,17 @@ export interface FindProductsByFiltersParams {
   filters?: KeyValuePairList[]
 }
 
-export type GetProductFiltersParams = Omit<FindProductsByFiltersParams, 'page' | 'size'>
+export type GetProductFiltersParams = Omit<
+  FindProductsByFiltersParams,
+  'page' | 'size'
+>
+
+async function findByCode(code: string) {
+  const response: AxiosAPIResponse<Product> = await axios.get(
+    buildEndpoint(`products/${code}`)
+  )
+  return response.data
+}
 
 async function findProductsByFilters(params: FindProductsByFiltersParams) {
   const {
@@ -60,17 +70,17 @@ async function getOfferProducts(page: number = 1, size: number = 10) {
   return response.data
 }
 
-async function getFilters(
-  params: GetProductFiltersParams
-) {
+async function getFilters(params: GetProductFiltersParams) {
   const { categoryCode, brands = [], filters = [] } = params
   const filtersPayLoad: ProductFiltersRequest = {
     categoryCode,
     brands,
     filters
   }
-  const response: AxiosAPIResponse<ProductFiltersResponse> =
-    await axios.post(buildEndpoint('attribute/filters'), filtersPayLoad)
+  const response: AxiosAPIResponse<ProductFiltersResponse> = await axios.post(
+    buildEndpoint('attribute/filters'),
+    filtersPayLoad
+  )
   return response.data
 }
 
@@ -79,5 +89,6 @@ export const ProductService = {
   getOfferProducts,
   findProductsByCategory,
   findProductsByFilters,
-  getFilters
+  getFilters,
+  findByCode
 }

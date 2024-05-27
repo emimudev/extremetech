@@ -5,14 +5,10 @@ import CarouselFluidItem from '../carousel-fluid/item'
 import Product from '../product'
 
 export default function FeaturedProducts() {
-  const { data, error, isLoading, isValidating } = useSWR(
+  const { data, isLoading } = useSWR(
     'api/products/featured',
     () => ProductService.getFeaturedProducts().then((res) => res.content)
   )
-
-  // console.log({ data, error, isLoading, isValidating })
-
-  console.log({ error })
 
   if (isLoading) return <div>Loading...</div>
 

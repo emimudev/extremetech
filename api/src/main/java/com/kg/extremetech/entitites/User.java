@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,9 +33,14 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
+  @Column(nullable = false, length = 500)
   private String name;
+  @Column(nullable = false, length = 500)
   private String lastname;
+  @Column(nullable = false, length = 500)
   private String fullName;
+  @Column(unique = true, nullable = false)
+  @Email
   private String email;
   @JsonIgnore
   private String password;
@@ -44,7 +51,8 @@ public class User implements UserDetails {
   private Role role;
   @Builder.Default
   private boolean isEnabled = true;
-  private boolean isLocked;
+  @Builder.Default
+  private boolean isLocked = false;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

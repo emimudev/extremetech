@@ -1,13 +1,21 @@
-import { LoginRequest, LoginResponse, TokenResponse, User } from '@/types/v2'
+import { LoginRequest, LoginResponse, SignupRequest, TokenResponse, User } from '@/types/v2'
 import axios from 'axios'
-import { AxiosAPIResponse, api, buildEndpoint } from './config'
+import { AxiosAPIResponse, buildEndpoint, securedAPI, setGlobalAccessToken } from './config'
 
 async function login(loginRequest: LoginRequest) {
   const response: AxiosAPIResponse<LoginResponse> = await axios.post(
     buildEndpoint('auth/login'),
     loginRequest
   )
-  // axios.defaults.headers.common.Authorization = `Bearer ${response.data.content?.token.accessToken}`
+  setGlobalAccessToken(response.data.content?.token.accessToken)
+  return response.data.content as LoginResponse
+}
+
+async function signup(signupRequest: SignupRequest) {
+  const response: AxiosAPIResponse<LoginResponse> = await axios.post(
+    buildEndpoint('auth/signup'),
+    signupRequest
+  )
   setGlobalAccessToken(response.data.content?.token.accessToken)
   return response.data.content as LoginResponse
 }
@@ -30,19 +38,15 @@ async function refreshToken() {
 }
 
 async function me() {
-  const response: AxiosAPIResponse<User> = await axios.get(
+  const response: AxiosAPIResponse<User> = await securedAPI.get(
     buildEndpoint('users/me')
   )
   return response.data
 }
 
-export function setGlobalAccessToken(token?: string) {
-  if (!token) return
-  axios.defaults.headers.common.Authorization = `Bearer ${token}`
-}
-
 export const AuthService = {
   login,
+  signup,
   refreshToken,
   me
 }

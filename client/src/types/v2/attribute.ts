@@ -1,4 +1,5 @@
 export interface Attribute {
-  id: string
+  id: number
   name: string
+  isRequired: boolean
 }

@@ -2,7 +2,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 
 export const isOpenModalAtom = atom(false)
 
-export const useLoginModalWrite = () => {
+export const useJoinModalWrite = () => {
   const setModal = useSetAtom(isOpenModalAtom)
 
   return {
@@ -12,15 +12,15 @@ export const useLoginModalWrite = () => {
     toggleModal: () => setModal(prev => !prev)
   }
 }
-export const useLoginModalRead = () => {
+export const useJoinModalRead = () => {
   const state = useAtomValue(isOpenModalAtom)
   return {
     isOpen: state
   }
 }
-export const useLoginModal = () => {
+export const useJoinModal = () => {
   return {
-    ...useLoginModalRead(),
-    ...useLoginModalWrite()
+    ...useJoinModalRead(),
+    ...useJoinModalWrite()
   }
 }

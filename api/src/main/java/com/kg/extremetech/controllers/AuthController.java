@@ -40,11 +40,25 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> signup(@RequestBody SignupRequestDTO registerUserDto) {
-    return Response.of(() -> {
-      final var result = authService.signup(registerUserDto);
-      cartService.createCart(result);
-      return UserDTO.from(result);
-    });
+    final var result = authService.signup(registerUserDto);
+    cartService.createCart(result);
+    LoginRequestDTO loginUserDto = LoginRequestDTO.builder()
+        .email(registerUserDto.getEmail())
+        .password(registerUserDto.getPassword())
+        .build();
+    UserDTO userDTO = UserDTO.from(result);
+    String jwtToken = jwtService.generateToken(UserDTO.toMap(userDTO), result);
+    RefreshToken refreshToken = refreshTokenService.createRefreshToken(loginUserDto.getEmail());
+    return Response.of(() -> LoginResponseDTO
+        .builder()
+        .token(
+            JwtResponseDTO.builder()
+                .accessToken(jwtToken)
+                .expiresIn(jwtService.getExpirationTime())
+                .refreshToken(refreshToken.getToken())
+                .build())
+        .user(userDTO)
+        .build());
   }
 
   @PostMapping("/login")

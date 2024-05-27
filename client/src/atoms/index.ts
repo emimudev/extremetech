@@ -1,6 +1,6 @@
 export * from './products-atom'
 export * from './featured-products-atom'
 export * from './best-offers-atom'
-export * from './login-modal'
+export * from './join-modal'
 export * from './user-atom'
 export * from './shopping-cart-atom'

@@ -5,6 +5,7 @@ import BestOffersProducts from '@/components/best-offers-products'
 
 export default function HomePage() {
   return (
+    /** overflow-hidden */
     <div className='flex flex-col relative z-0 -mt-[var(--navbar-height)] pt-[var(--navbar-height)]'>
       <Hero />
       <section className='mt-24 md:mt-40  relative z-0 flex flex-col'>

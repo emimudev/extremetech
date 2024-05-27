@@ -13,8 +13,6 @@ import com.kg.extremetech.entitites.QAttributeValue;
 import com.kg.extremetech.entitites.QCategory;
 import com.kg.extremetech.entitites.QProduct;
 import com.kg.extremetech.repositories.AttributeRepository;
-import com.kg.extremetech.specifications.AttributeSpecification;
-import com.kg.extremetech.specifications.ProductSpecification;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
@@ -25,13 +23,6 @@ public class AttributeService {
 
   @Autowired
   private AttributeRepository attributeRepository;
-
-  public List<AttributeValue> findByFilters(ProductFiltersRequestDTO filters) {
-    return attributeRepository.findAll(AttributeSpecification.columnEqual(filters));
-  }
-
-  // @Autowired
-  // private EntityManager entityManager;
 
   @Autowired
   private JPAQueryFactory queryFactory;

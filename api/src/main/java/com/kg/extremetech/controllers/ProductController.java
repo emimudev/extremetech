@@ -29,17 +29,19 @@ public class ProductController {
 
   @GetMapping
   public ResponseEntity<?> find(Integer page, Integer size) {
-    return Response.of(page, size, (pageRequest) -> productService.find(pageRequest));
+    return Response.of(page, size,
+        (pageRequest) -> productService.find(pageRequest).map(p -> ProductResponseDTO.from(p)));
   }
 
   @GetMapping("/{productCode}")
   public ResponseEntity<?> findById(@PathVariable String productCode) {
-    return Response.of(() -> productService.findByCode(productCode));
+    return Response.of(() -> ProductResponseDTO.from(productService.findByCode(productCode)));
   }
 
   @GetMapping("/name/{productName}")
   public ResponseEntity<?> findByName(@PathVariable String productName, Integer page, Integer size) {
-    return Response.of(page, size, (pageRequest) -> productService.findByName(productName, pageRequest));
+    return Response.of(page, size,
+        (pageRequest) -> productService.findByName(productName, pageRequest).map(p -> ProductResponseDTO.from(p)));
   }
 
   @GetMapping("/featured")
@@ -72,7 +74,7 @@ public class ProductController {
 
   @DeleteMapping("/{productCode}")
   public ResponseEntity<?> deleteById(@PathVariable String productCode) {
-    return Response.of(() -> productService.removeByCode(productCode));
+    return Response.of(() -> ProductResponseDTO.from(productService.removeByCode(productCode)));
   }
 
 }

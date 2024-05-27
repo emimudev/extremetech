@@ -1,4 +1,4 @@
-type RoleType = 'CLIENT' | 'ADMIN' | 'SUPER_ADMIN'
+export type RoleType = 'CLIENT' | 'ADMIN' | 'SUPER_ADMIN'
 
 export interface Role {
   id: string

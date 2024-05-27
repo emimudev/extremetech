@@ -12,6 +12,7 @@ import com.kg.extremetech.dtos.*;
 import com.kg.extremetech.entitites.*;
 import com.kg.extremetech.entitites.keys.ProductAttributeValue;
 import com.kg.extremetech.repositories.*;
+import com.kg.extremetech.services.CartService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,10 +38,14 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
   @Autowired
   private ProductRepository productRepository;
 
+  @Autowired
+  private CartService cartService;
+
   @Override
   @Transactional
   public void onApplicationEvent(@NonNull ContextRefreshedEvent contextRefreshedEvent) {
     loadRoles();
+    loadDefaultUsers();
     createSuperAdministrator();
     loadCategories();
     loadBrands();
@@ -88,7 +93,25 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         .password(passwordEncoder.encode(userDto.password))
         .role(optionalRole.get())
         .build();
-    userRepository.save(user);
+    var userSaved = userRepository.save(user);
+    cartService.createCart(userSaved);
+  }
+
+  private void loadDefaultUsers() {
+    final var optionalUser = userRepository.findByEmail("emilianomurillo@gmail.com");
+    if (optionalUser.isPresent()) {
+      return;
+    }
+    final var user = User.builder()
+        .name("Emiliano")
+        .lastname("Murillo")
+        .fullName("Emiliano Murillo")
+        .email("emilianomurillo@gmail.com")
+        .password(passwordEncoder.encode("123456"))
+        .role(roleRepository.findByType(RoleType.CLIENT).get())
+        .build();
+    final var savedUser = userRepository.save(user);
+    cartService.createCart(savedUser);
   }
 
   private void loadBrands() {
@@ -126,7 +149,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(1L).code("laptop").name("Laptop")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("RAM").build(),
                     Attribute.builder().name("Processor").build(),
                     Attribute.builder().name("Graphic Card").build(),
@@ -135,7 +157,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(2L).code("desktop").name("Desktop")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("RAM").build(),
                     Attribute.builder().name("Processor").build(),
                     Attribute.builder().name("Graphic Card").build(),
@@ -151,7 +172,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(4L).code("gpu").name("Graphics Card")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Chipset").build(),
                     Attribute.builder().name("VRAM").build(),
                     Attribute.builder().name("GPU").build())))
@@ -159,7 +179,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(5L).code("motherboard").name("Motherboard")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Socket").build(),
                     Attribute.builder().name("Chipset").build(),
                     Attribute.builder().name("Format").build())))
@@ -167,7 +186,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(6L).code("ram").name("Memory")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Capacity").build(),
                     Attribute.builder().name("Type").build(),
                     Attribute.builder().name("Speed").build())))
@@ -175,7 +193,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(7L).code("monitor").name("Monitor")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Size").build(),
                     Attribute.builder().name("Resolution").build(),
                     Attribute.builder().name("Panel Type").build(),
@@ -186,20 +203,17 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(8L).code("keyboard").name("Keyboard")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Type").build(),
                     Attribute.builder().name("Connection").build())))
             .build(),
         Category.builder().id(9L).code("mouse").name("Mouse")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Connection").build())))
             .build(),
         Category.builder().id(10L).code("headset").name("Headset")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Audio").build(),
                     Attribute.builder().name("Connection").build())))
             .build());

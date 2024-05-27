@@ -15,6 +15,7 @@ export interface Product {
   stock: number
   images: string[]
   createdAt: string
+  isOnSale: boolean
   attributes: AttributeValue[]
   features: Record<string, string | number | string[]>
 }

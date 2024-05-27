@@ -1,9 +1,9 @@
+import { Toaster } from '@/components/ui/sonner'
 import { Outlet, ScrollRestoration } from 'react-router-dom'
 import Footer from '../footer'
-import Navbar from '../navbar'
-import { LoginModal } from '../login-modal'
+import { JoinModal } from '../join-modal'
 import MobileNavbar from '../mobile-navbar'
-import { Toaster } from '@/components/ui/sonner'
+import Navbar from '../navbar'
 
 export default function Layout() {
   return (
@@ -15,7 +15,7 @@ export default function Layout() {
       <Footer />
       <ScrollRestoration />
       <MobileNavbar />
-      <LoginModal />
+      <JoinModal />
       <Toaster />
     </div>
   )

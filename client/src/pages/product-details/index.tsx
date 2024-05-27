@@ -1,38 +1,48 @@
-import { productsAtom } from '@/atoms'
 import AddProductToCart from '@/components/add-product-cart'
-import CarouselFluid from '@/components/carousel-fluid'
-import CarouselFluidItem from '@/components/carousel-fluid/item'
 import { CartShippingIcon } from '@/components/icons'
-import Product from '@/components/product'
 import ProductThumbnails from '@/components/product-thumbnails'
-import useRelatedProducts from '@/hooks/use-related-products'
-import { IProduct } from '@/types'
-import { buildBreadcrumb } from '@/utils/functions'
-import { BreadcrumbItem, Breadcrumbs, Chip, Divider } from '@nextui-org/react'
-import { useAtomValue } from 'jotai'
+import { RelatedProducts } from '@/components/related-products'
+import { findLocalCategoryByCode } from '@/data/categories'
+import { ProductService } from '@/services/product-service'
+import { BreadcrumbItem, Breadcrumbs, Divider } from '@nextui-org/react'
 import { ShoppingCartIcon } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+import useSWR from 'swr'
 
 export default function ProductDetails() {
   const params = useParams()
-  const categoryParam = params.category
-  const breadcrumbTree = buildBreadcrumb(categoryParam)
-  const currentProduct = useAtomValue(productsAtom).find(
-    (product) => product.id === Number(params.id)
+  const categoryCode = params.categoryCode
+  const productCode = params.productCode
+  const currentCategory = findLocalCategoryByCode(categoryCode)
+
+  const { data, isLoading } = useSWR(
+    () => {
+      if (!productCode) {
+        return null
+      }
+      return [productCode, 'api/v1/products']
+    },
+    ([code]) => ProductService.findByCode(code).then((res) => res.content)
   )
-  const relatedProducts = useRelatedProducts({
-    product: currentProduct as IProduct
-  })
-  const offer = currentProduct?.offer
-  const { discount } = offer || {}
 
-  console.log({ breadcrumbTree, currentProduct })
+  if (!currentCategory || !categoryCode || !productCode) {
+    return <Navigate to='/' />
+  }
 
-  if (!currentProduct) return <Navigate to={'/'}></Navigate>
+  if (!data && isLoading) {
+    return null
+  }
+
+  if (!data && !isLoading) {
+    return <Navigate to='/' />
+  }
+
+  const currentProduct = data!
+  const { offer } = currentProduct
 
   return (
     <div className='min-h-[calc(100vh-var(--navbar-height))] mb-14'>
-      <div className='flex flex-[0_0_auto] items-center main-padding bg-content1 sm:sticky top-[var(--navbar-height)] z-10 border-b-2'>
+      <div className='h-8 flex flex-[0_0_auto] items-center main-padding bg-content1 sm:sticky top-[var(--navbar-height)] z-10 border-b-2'>
         <Breadcrumbs className='flex items-center py-2'>
           <BreadcrumbItem as='div'>
             <Link
@@ -42,17 +52,14 @@ export default function ProductDetails() {
               Home
             </Link>
           </BreadcrumbItem>
-          {breadcrumbTree.map((category) => (
-            <BreadcrumbItem as='div' key={category.id}>
-              <Link
-                key={category.id}
-                to={`/products?categories=${category.id}`}
-                className='text-foreground-strong/50 text-xs hover:text-foreground-strong transition-colors rounded-lg'
-              >
-                {category.name}
-              </Link>
-            </BreadcrumbItem>
-          ))}
+          <BreadcrumbItem as='div'>
+            <Link
+              to={`/products/${currentCategory.code}`}
+              className='text-foreground-strong/50 text-xs hover:text-foreground-strong transition-colors rounded-lg'
+            >
+              {currentCategory.name}
+            </Link>
+          </BreadcrumbItem>
           <BreadcrumbItem
             className='overflow-hidden'
             classNames={{
@@ -69,7 +76,7 @@ export default function ProductDetails() {
             <ProductThumbnails images={currentProduct?.images} />
             {offer && (
               <span className='z-0 absolute top-4 left-4 text-sm font-semibold dark:text-white px-3 py-0.5 rounded-full  bg-gradient-to-br from-indigo-700/60 to-rose-500/60 shadow-lg'>
-                {discount}% OFF
+                {offer.discount}% OFF
               </span>
             )}
           </div>
@@ -81,7 +88,7 @@ export default function ProductDetails() {
               </h1>
               <div className='flex items-baseline justify-between mt-1'>
                 <div className='flex gap-1 items-center'>
-                  {breadcrumbTree.map((category, key) => (
+                  {/* {breadcrumbTree.map((category, key) => (
                     <Chip
                       key={key}
                       className='text-xs bg-blue-900/30'
@@ -92,10 +99,10 @@ export default function ProductDetails() {
                     >
                       {category.name}
                     </Chip>
-                  ))}
+                  ))} */}
                 </div>
                 <span className='flex items-center text-lg lg:text-xl text-foreground-strong min-h-7 mt-2'>
-                  {discount && (
+                  {offer && (
                     <span className='line-through mr-2 text-foreground-secondary text-sm'>
                       ${currentProduct?.price}
                     </span>
@@ -103,7 +110,8 @@ export default function ProductDetails() {
                   <span className='text-foreground-strong'>
                     $
                     {currentProduct?.price
-                      ? currentProduct?.price * (1 - (discount || 0) / 100)
+                      ? currentProduct?.price *
+                        (1 - (offer?.discount || 0) / 100)
                       : 0}
                   </span>
                 </span>
@@ -118,7 +126,7 @@ export default function ProductDetails() {
               </div>
               <div className='lg:flex sticky sm:bottom-4 bottom-16 top-[calc(var(--navbar-height)+0.5rem)] sm:top-[calc(var(--navbar-height)+2.5rem)] z-[5]'>
                 <AddProductToCart
-                  product={currentProduct as IProduct}
+                  product={currentProduct}
                   color='primary'
                   fullWidth
                   startContent={<ShoppingCartIcon className='w-5 h-5' />}
@@ -166,13 +174,7 @@ export default function ProductDetails() {
             Related Products
           </h2>
           <div className='relative overflow-x-visible main-padding '>
-            <CarouselFluid>
-              {relatedProducts.map((product, key) => (
-                <CarouselFluidItem key={key} className='basis-1/3 xl:basis-1/5'>
-                  <Product product={product} />
-                </CarouselFluidItem>
-              ))}
-            </CarouselFluid>
+            <RelatedProducts categoryCode={categoryCode} />
           </div>
         </div>
       </div>
