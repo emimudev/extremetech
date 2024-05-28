@@ -6,15 +6,16 @@ import {
   DropdownMenu,
   DropdownTrigger
 } from '@nextui-org/react'
-import { LogOutIcon, UserIcon } from 'lucide-react'
+import { HeartIcon, LogOutIcon, ShoppingBag, UserIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export default function UserAvatar() {
-  // const { user, logout } = useAuth()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const navigateToProfile = () => navigate('/me')
+  const navigateWishList = () => navigate('/me/wishlist')
+  const navigateOrders = () => navigate('/me/orders')
 
   return (
     <Dropdown>
@@ -36,7 +37,19 @@ export default function UserAvatar() {
         <DropdownItem key='my-profile' onClick={navigateToProfile}>
           <div className='flex items-center gap-3'>
             <UserIcon className='w-4 h-4' />
-            My Profile
+            Profile
+          </div>
+        </DropdownItem>
+        <DropdownItem key='wishlist' onClick={navigateWishList}>
+          <div className='flex items-center gap-3'>
+            <HeartIcon fill='currentColor' className='w-4 h-4' />
+            WishList
+          </div>
+        </DropdownItem>
+        <DropdownItem key='orders' onClick={navigateOrders}>
+          <div className='flex items-center gap-3'>
+            <ShoppingBag className='w-4 h-4' />
+            My Orders
           </div>
         </DropdownItem>
         <DropdownItem key='logout' onClick={logout}>

@@ -11,6 +11,8 @@ const ClientSettingsPage = lazy(() => import('@/pages/client-settings'))
 const ClientProfilePage = lazy(() => import('@/pages/client-profile'))
 const ShoppingCartPage = lazy(() => import('@/pages/shopping-cart'))
 const WishListPage = lazy(() => import('@/pages/wish-list'))
+const CheckoutPage = lazy(() => import('@/pages/checkout'))
+const ClientOrdersPage = lazy(() => import('@/pages/client-orders'))
 
 export const AppRoutes = createBrowserRouter([
   {
@@ -35,7 +37,7 @@ export const AppRoutes = createBrowserRouter([
             element: <ProductDetails />
           },
           { path: 'cart', element: <ShoppingCartPage /> },
-          // { path: 'checkout', element: <CheckoutPage /> },
+          { path: 'checkout', element: <CheckoutPage /> },
           {
             path: 'me',
             element: (
@@ -51,6 +53,10 @@ export const AppRoutes = createBrowserRouter([
               {
                 path: '/me/wishlist',
                 element: <WishListPage />
+              },
+              {
+                path: '/me/orders',
+                element: <ClientOrdersPage />
               }
             ]
           },

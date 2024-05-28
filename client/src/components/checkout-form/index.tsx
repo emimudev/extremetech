@@ -12,9 +12,13 @@ import {
   FormMessage
 } from '../ui/form'
 import { useEffect, useState } from 'react'
-import { useShoppingCart } from '@/atoms'
 import { Dialog, DialogContent } from '../ui/dialog'
 import { useNavigate } from 'react-router-dom'
+import { useCart } from '@/hooks/use-cart'
+import { OrdersService } from '@/services/orders-service'
+import { OrderRequest } from '@/types/order-request'
+import { OrderItemRequest } from '@/types/order-item-request'
+import { useAuth } from '@/hooks/use-auth'
 
 function checkIsVisa(cardNumber: string) {
   return cardNumber.match(/^4\d{12}(?:\d{3})?$/)
@@ -49,6 +53,7 @@ const formSchema = z.object({
   cardNumber: z.string().refine(validateCreditCard, {
     message: 'Enter a valid credit card number'
   }),
+  cardHolderName: z.string().min(1, { message: 'Card holder is required' }),
   cvv: z
     .string()
     .min(3, { message: 'Enter a valid CVV' })
@@ -57,23 +62,24 @@ const formSchema = z.object({
   address: z.string().min(1, { message: 'Address is required' }),
   city: z.string().min(1, { message: 'City is required' }),
   provice: z.string().min(1, { message: 'Province is required' }),
-  cardHolder: z.string().min(1, { message: 'Card holder is required' }),
   zipCode: z.string().min(1, { message: 'Zip code is required' })
 })
 
 export function CheckoutForm() {
-  const { items, setShoppingCart } = useShoppingCart()
+  const { cart, mutate } = useCart()
+  const { items } = cart
+  const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      address: '',
-      cardHolder: '',
+      email: user?.email,
       cardNumber: '',
-      city: '',
+      cardHolderName: user?.fullName,
       cvv: '',
+      address: '',
       expiry: '',
+      city: '',
       provice: '',
       zipCode: ''
     }
@@ -103,13 +109,40 @@ export function CheckoutForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({ values })
-    setOpen(true)
+
+    const order: OrderRequest = {
+      orderInfo: {
+        address: values.address,
+        cardHolderName: values.cardHolderName,
+        cardNumber: values.cardNumber,
+        city: values.city,
+        cvv: values.cvv,
+        email: values.email,
+        expiryDate: values.expiry,
+        province: values.provice,
+        zipCode: values.zipCode
+      },
+      items: items.map(({ product, quantity }) => {
+        return {
+          product,
+          quantity
+        } as OrderItemRequest
+      })
+    }
+
+    OrdersService.createOrder(order)
+      .then(() => {
+        setOpen(true)
+      })
+      .catch((err) => {
+        console.log({ err })
+      })
   }
 
   const handleCloseModal = () => {
     setOpen(false)
-    navigate('/products')
-    setShoppingCart({ type: 'clear' })
+    mutate()
+    navigate('/')
   }
 
   return (
@@ -141,7 +174,7 @@ export function CheckoutForm() {
             />
             <FormField
               control={form.control}
-              name='cardHolder'
+              name='cardHolderName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name on card</FormLabel>
@@ -167,7 +200,6 @@ export function CheckoutForm() {
                     <FormControl>
                       <Input
                         variant='flat'
-                        // autoComplete='username'
                         radius='sm'
                         placeholder='Enter your card number'
                         startContent={cardType || ' '}

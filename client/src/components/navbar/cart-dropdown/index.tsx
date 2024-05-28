@@ -42,7 +42,7 @@ export function CartDropdown() {
         className='bg-content1 min-w-[340px] rounded-2xl flex flex-col max-h-[320px] overflow-hidden p-0'
       >
         {/* eslint-disable-next-line */}
-        {cart.items.length > 0 ? (
+        {cart?.items?.length > 0 ? (
           <>
             <ScrollArea className='h-[200px] flex flex-1 flex-col '>
               {cart.items.map((item) => (

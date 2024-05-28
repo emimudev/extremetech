@@ -61,7 +61,10 @@ public class ProductResponseDTO {
         .updatedAt(product.getUpdatedAt())
         .isFeatured(product.getIsFeatured())
         .features(product.getFeatures())
-        .attributes(product.getAttributes().stream().map(ProductAttributeValueDTO::from).collect(Collectors.toList()))
+        .attributes(
+            product.getAttributes() != null
+                ? product.getAttributes().stream().map(ProductAttributeValueDTO::from).collect(Collectors.toList())
+                : List.of())
         .build();
   }
 }

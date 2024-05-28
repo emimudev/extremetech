@@ -18,8 +18,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
@@ -91,21 +89,8 @@ public class Product {
   @Builder.Default
   private Map<String, String> features = new HashMap<>();
 
-  // @ElementCollection()
-  // @CollectionTable(name = "product_attribute_value")
   @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
-  // @JoinTable(
-  //   name = "product_attribute_value", 
-  //   joinColumns = @JoinColumn(name = "product_id"),
-  //   inverseJoinColumns = @JoinColumn(name = "attribute_value_id"))
   private List<AttributeValue> attributes;
-
-  // @PrePersist
-  // public Product addAttributes(List<AttributeValue> attributes) {
-  //   this.attributes = attributes;
-  //   attributes.forEach(attribute -> attribute.setProduct(this));
-  //   return this;
-  // }
 
   @PrePersist
   public void linkBidirectional() {

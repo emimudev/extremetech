@@ -224,6 +224,7 @@ export function useCart() {
     addItem,
     removeItem,
     searchProduct,
+    mutate,
     totalItems,
     totalPrice,
     isLoadingCart: isLoading,

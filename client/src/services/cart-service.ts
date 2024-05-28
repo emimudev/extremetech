@@ -39,13 +39,6 @@ async function clear() {
   return response.data
 }
 
-// async function removeItem(item: CartItem) {
-//   const response: AxiosAPIResponse<null> = await securedAPI.delete(
-//     buildEndpoint(`cart/${item.id}`)
-//   )
-//   return response.data
-// }
-
 export const CartService = {
   getMyCart,
   add,

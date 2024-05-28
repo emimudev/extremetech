@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/use-auth'
 import { Avatar, Divider, Tab, Tabs } from '@nextui-org/react'
-import { HeartIcon, HistoryIcon, UserIcon } from 'lucide-react'
+import { HeartIcon, ShoppingBag, UserIcon } from 'lucide-react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 
 export default function ClientSettingsPage() {
@@ -70,12 +70,14 @@ export default function ClientSettingsPage() {
               }
             />
             <Tab
-              href='/purchase-history'
-              key='/purchase-history'
+              as={Link}
+              // @ts-expect-error href is not a valid prop
+              to='/me/orders'
+              key='/me/orders'
               title={
                 <span className='flex gap-2 items-center'>
-                  <HistoryIcon size={16} />
-                  Purchase History
+                  <ShoppingBag size={16} />
+                  Purchases
                 </span>
               }
             />

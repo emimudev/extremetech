@@ -1,21 +1,23 @@
-import { useShoppingCart } from '@/atoms'
 import { CheckoutForm } from '@/components/checkout-form'
-import useAuth from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/use-auth'
+import { useCart } from '@/hooks/use-cart'
 import { BreadcrumbItem, Breadcrumbs, Button, Divider } from '@nextui-org/react'
 import { ShoppingCart } from 'lucide-react'
 import { Link, Navigate } from 'react-router-dom'
 
 export default function CheckoutPage() {
-  const { user } = useAuth()
-  const { items } = useShoppingCart()
+  const { isAuthenticated } = useAuth()
+  const { cart } = useCart()
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to='/' />
   }
 
-  if (!items.length) {
+  if (!cart.items.length) {
     return <Navigate to='/' />
   }
+
+  const { items } = cart
 
   return (
     <div className='min-h-[calc(100vh-var(--navbar-height))] flex flex-col'>
