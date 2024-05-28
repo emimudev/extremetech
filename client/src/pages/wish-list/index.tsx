@@ -2,10 +2,17 @@
 import { DelayedRender } from '@/components/delayed-render'
 import Product from '@/components/product'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useAuth } from '@/hooks/use-auth'
 import { useWishList } from '@/hooks/use-wish-list'
+import { Navigate } from 'react-router-dom'
 
 export default function WishListPage() {
+  const { isClient } = useAuth()
   const { data, isLoading } = useWishList()
+
+  if (!isClient) {
+    return <Navigate to='/' />
+  }
 
   return (
     <div className='flex flex-col pb-16'>

@@ -7,10 +7,10 @@ import { useCallback } from 'react'
 
 export function useWishList() {
   const { openModal } = useJoinModal()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isClient } = useAuth()
   const { data, mutate, ...response } = useSWR(
     () => {
-      if (isAuthenticated) {
+      if (isAuthenticated && isClient) {
         return 'api/v1/wishlist'
       }
       return null

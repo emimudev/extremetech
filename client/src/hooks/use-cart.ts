@@ -11,7 +11,7 @@ import { useAuth } from './use-auth'
 
 export function useCart() {
   const [cart, setCart] = useCartAtom()
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated, user, isClient } = useAuth()
 
   const { isLoading, isValidating, mutate } = useSWR(
     () => {
@@ -46,7 +46,7 @@ export function useCart() {
 
   // Load local storage cart if user is not authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated || !isClient) {
       return
     }
     const localCartStr = localStorage.getItem(LOCAL_CART_KEY)
@@ -54,7 +54,7 @@ export function useCart() {
     if (localCart) {
       setCart(localCart)
     }
-  }, [isAuthenticated, setCart])
+  }, [isAuthenticated, setCart, isClient])
 
   const searchProduct = useCallback(
     (product: Product | string) => {

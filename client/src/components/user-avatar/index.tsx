@@ -10,7 +10,7 @@ import { HeartIcon, LogOutIcon, ShoppingBag, UserIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export default function UserAvatar() {
-  const { user, logout } = useAuth()
+  const { user, isClient, logout } = useAuth()
   const navigate = useNavigate()
 
   const navigateToProfile = () => navigate('/me')
@@ -33,32 +33,44 @@ export default function UserAvatar() {
           />
         </button>
       </DropdownTrigger>
-      <DropdownMenu aria-label='User settings'>
-        <DropdownItem key='my-profile' onClick={navigateToProfile}>
-          <div className='flex items-center gap-3'>
-            <UserIcon className='w-4 h-4' />
-            Profile
-          </div>
-        </DropdownItem>
-        <DropdownItem key='wishlist' onClick={navigateWishList}>
-          <div className='flex items-center gap-3'>
-            <HeartIcon fill='currentColor' className='w-4 h-4' />
-            WishList
-          </div>
-        </DropdownItem>
-        <DropdownItem key='orders' onClick={navigateOrders}>
-          <div className='flex items-center gap-3'>
-            <ShoppingBag className='w-4 h-4' />
-            My Orders
-          </div>
-        </DropdownItem>
-        <DropdownItem key='logout' onClick={logout}>
-          <div className='flex items-center gap-3'>
-            <LogOutIcon className='w-4 h-4' />
-            Logout
-          </div>
-        </DropdownItem>
-      </DropdownMenu>
+      {isClient && (
+        <DropdownMenu aria-label='User settings'>
+          <DropdownItem key='my-profile' onClick={navigateToProfile}>
+            <div className='flex items-center gap-3'>
+              <UserIcon className='w-4 h-4' />
+              Profile
+            </div>
+          </DropdownItem>
+          <DropdownItem key='wishlist' onClick={navigateWishList}>
+            <div className='flex items-center gap-3'>
+              <HeartIcon fill='currentColor' className='w-4 h-4' />
+              WishList
+            </div>
+          </DropdownItem>
+          <DropdownItem key='orders' onClick={navigateOrders}>
+            <div className='flex items-center gap-3'>
+              <ShoppingBag className='w-4 h-4' />
+              My Orders
+            </div>
+          </DropdownItem>
+          <DropdownItem key='logout' onClick={logout}>
+            <div className='flex items-center gap-3'>
+              <LogOutIcon className='w-4 h-4' />
+              Logout
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      )}
+      {!isClient && (
+        <DropdownMenu aria-label='User settings'>
+          <DropdownItem key='logout-admin' onClick={logout}>
+            <div className='flex items-center gap-3'>
+              <LogOutIcon className='w-4 h-4' />
+              Logout
+            </div>
+          </DropdownItem>
+        </DropdownMenu>
+      )}
     </Dropdown>
   )
 }

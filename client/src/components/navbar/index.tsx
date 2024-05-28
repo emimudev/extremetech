@@ -18,7 +18,7 @@ export default function Navbar() {
   const ref = useRef<HTMLElement | null>(null)
   const isMobile = useIsMobile()
   const { openModal } = useJoinModalWrite()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isClient } = useAuth()
 
   return (
     <NavbarNext
@@ -44,9 +44,11 @@ export default function Navbar() {
       </div>
       <Spacer className='hidden sm:block' />
       <NavbarContent className='flex-0 !flex-grow-0 gap-2' justify='end'>
-        <NavbarItem className='hidden sm:flex items-center'>
-          <CartDropdown />
-        </NavbarItem>
+        {isClient && (
+          <NavbarItem className='hidden sm:flex items-center'>
+            <CartDropdown />
+          </NavbarItem>
+        )}
         {isAuthenticated && (
           <NavbarItem>
             <UserAvatar />
@@ -59,7 +61,9 @@ export default function Navbar() {
               size='sm'
               radius='full'
               className='text-sm font-semibold'
-              onKeyDown={(e) => (e.key === 'Enter' || e.key === 'Space') && openModal()}
+              onKeyDown={(e) =>
+                (e.key === 'Enter' || e.key === 'Space') && openModal()
+              }
               onClick={openModal}
             >
               Join

@@ -13,6 +13,8 @@ import {
   FormLabel,
   FormMessage
 } from '../ui/form'
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { useState } from 'react'
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email' }),
@@ -51,6 +53,10 @@ export function LoginForm() {
       })
   }
 
+  const [isVisible, setIsVisible] = useState(false)
+
+  const toggleVisibility = () => setIsVisible(!isVisible)
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
@@ -80,10 +86,24 @@ export function LoginForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  type='password'
+                  type={isVisible ? 'text' : 'password'}
                   autoComplete='current-password'
                   variant='faded'
                   placeholder='Enter your password'
+                  endContent={
+                    <button
+                      className='focus:outline-none'
+                      type='button'
+                      onClick={toggleVisibility}
+                    >
+                      {/* eslint-disable-next-line multiline-ternary */}
+                      {isVisible ? (
+                        <EyeIcon className='h-4 w-4 text-default-400 pointer-events-none' />
+                      ) : (
+                        <EyeOffIcon className='h-4 w-4 text-default-400 pointer-events-none' />
+                      )}
+                    </button>
+                  }
                   {...field}
                 />
               </FormControl>
@@ -92,11 +112,7 @@ export function LoginForm() {
           )}
         />
         <Divider className='!mt-5' />
-        <Button
-          type='submit'
-          color='primary'
-          className='w-full font-semibold'
-        >
+        <Button type='submit' color='primary' className='w-full font-semibold'>
           Sign in
         </Button>
       </form>

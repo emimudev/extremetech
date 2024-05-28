@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.3.5",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -25,6 +27,7 @@
     "array-shuffle": "^3.0.0",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "^2.2.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.6.0",
     "embla-carousel-auto-scroll": "^8.0.2",
@@ -40,6 +43,7 @@
     "random-item": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.51.3",
     "react-router-dom": "^6.23.0",
     "sonner": "^1.4.41",

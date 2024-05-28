@@ -3,7 +3,8 @@ import { KeyValuePairList } from '@/types/key-value-pair-list'
 import { ProductFiltersRequest } from '@/types/product-filters-request'
 import { ProductFiltersResponse } from '@/types/product-filters-response'
 import axios from 'axios'
-import { AxiosAPIResponse, buildEndpoint } from './config'
+import { AxiosAPIResponse, buildEndpoint, securedAPI } from './config'
+import { ProductRequest } from '@/types/product-request'
 
 export interface FindProductsByFiltersParams {
   categoryCode: string
@@ -84,11 +85,28 @@ async function getFilters(params: GetProductFiltersParams) {
   return response.data
 }
 
+async function getProducts(page: number = 1, size: number = 10) {
+  const response: AxiosAPIResponse<PageResult<Product>> = await axios.get(
+    buildEndpoint(`products?page=${page}&size=${size}`)
+  )
+  return response.data
+}
+
+async function createProduct(product: ProductRequest) {
+  const response: AxiosAPIResponse<Product> = await securedAPI.post(
+    buildEndpoint('products'),
+    product
+  )
+  return response.data
+}
+
 export const ProductService = {
   getFeaturedProducts,
   getOfferProducts,
   findProductsByCategory,
   findProductsByFilters,
   getFilters,
-  findByCode
+  findByCode,
+  getProducts,
+  createProduct
 }

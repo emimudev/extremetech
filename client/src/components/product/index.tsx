@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import AddProductToCart from '../add-product-cart'
 import { useWishList } from '@/hooks/use-wish-list'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/hooks/use-auth'
 
 export interface ProductProps {
   product: ProductType
@@ -14,6 +15,7 @@ export interface ProductProps {
 export default function Product({ product }: ProductProps) {
   const { category, offer, images, price, name } = product
   const { searchProduct } = useCart()
+  const { isClient } = useAuth()
   const {
     isProductInWishList: searchProductInWishList,
     addToWishList,
@@ -60,7 +62,7 @@ export default function Product({ product }: ProductProps) {
               </span>
             )}
             <span className='text-foreground-strong'>
-              ${price ? price * (1 - (offer?.discount || 0) / 100) : 0}
+              ${price ? (price * (1 - (offer?.discount || 0) / 100)).toFixed(2) : 0}
             </span>
           </div>
         </header>
@@ -92,45 +94,40 @@ export default function Product({ product }: ProductProps) {
               {product.brand.name}
             </Chip>
           </div>
-          <div>
-            {product.attributes.map((attribute) => [
-              attribute.attribute.name,
-              '     ',
-              attribute.value
-            ])}
-          </div>
         </div>
         <Divider />
-        <div className='flex items-center gap-2 px-4 py-3 flex-[0_0_auto]'>
-          <AddProductToCart
-            type='submit'
-            size='sm'
-            radius='sm'
-            variant='flat'
-            product={product as ProductType}
-            fullWidth
-            className='dark:bg-[#71717A]/25 text-sm'
-          >
-            Add to Cart
-          </AddProductToCart>
-          <div className='flex items-center gap-1.5'>
-            <Button
+        {isClient && (
+          <div className='flex items-center gap-2 px-4 py-3 flex-[0_0_auto]'>
+            <AddProductToCart
               type='submit'
               size='sm'
               radius='sm'
-              isIconOnly
               variant='flat'
-              className='dark:bg-[#71717A]/40 p-1.5 text-sm'
-              aria-label='Add to wishlist'
-              onClick={() => toggleWishListItem(product)}
+              product={product as ProductType}
+              fullWidth
+              className='dark:bg-[#71717A]/25 text-sm'
             >
-              <LucideHeart
-                fill={isProductInWishList ? 'currentColor' : 'transparent'}
-                className={cn(isProductInWishList && 'text-primary-500')}
-              />
-            </Button>
+              Add to Cart
+            </AddProductToCart>
+            <div className='flex items-center gap-1.5'>
+              <Button
+                type='submit'
+                size='sm'
+                radius='sm'
+                isIconOnly
+                variant='flat'
+                className='dark:bg-[#71717A]/40 p-1.5 text-sm'
+                aria-label='Add to wishlist'
+                onClick={() => toggleWishListItem(product)}
+              >
+                <LucideHeart
+                  fill={isProductInWishList ? 'currentColor' : 'transparent'}
+                  className={cn(isProductInWishList && 'text-primary-500')}
+                />
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

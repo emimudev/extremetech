@@ -50,7 +50,7 @@ export default function ShoppingCartPage() {
                     <div className='flex-[0_0_80px] h-fit md:flex-[0_0_120px] flex p-2 items-center bg-accent/40 rounded-xl overflow-hidden'>
                       <Link
                         className='w-auto'
-                        to={`/products/${item.product.category.code}/${item.product.code}`}
+                        to={`/products/${item?.product?.category?.code}/${item?.product?.code}`}
                       >
                         <img
                           className='w-full h-full object-cover'

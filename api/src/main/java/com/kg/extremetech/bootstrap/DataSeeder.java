@@ -160,7 +160,6 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Category.builder().id(3L).code("cpu").name("Processor")
             .attributes(new HashSet<>(
                 List.of(
-                    Attribute.builder().name("Brand").build(),
                     Attribute.builder().name("Socket").build(),
                     Attribute.builder().name("Processor").build())))
             .build(),
@@ -281,10 +280,13 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
                         createAttributeValue(getAttribute(category, "Graphic Card"), "Nvidia RTX 2060 Max-Q"),
                         createAttributeValue(getAttribute(category, "Storage"), "1TB SSD")))
                 .images(List.of(
-                    "https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/A182DF3B-87D5-4534-AF9C-05DDE005E007/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/8DBA2F72-7907-48F2-A974-B5C41A05FF8B/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/FD41F737-BF20-45BF-963B-D1A530A8F974/w1000/h732"))
+                    "https://dlcdnwebimgs.asus.com/gain/7807824E-6860-4959-957C-20F0446D1E23/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/46FAAF9E-C641-4AB7-B0C8-795BD379C0CB/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/8CF89A4E-2526-480F-9E1A-CB127EB7BCDD/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/C655BF17-2802-4875-9890-5CAD6E55C0B0/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/DF4D199B-2F45-44C2-A8C3-90A058212169/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/E1249409-7CB2-4F7A-8ADC-E58FADEB54DE/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/F8236ACA-F9A8-4AFD-AD71-43A695E9DC4C/w1000/h732"))
                 .stock(5L)
                 .isFeatured(true)
                 .build(),
@@ -303,10 +305,15 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
                         createAttributeValue(getAttribute(category, "Graphic Card"), "Nvidia GTX 1650 Max-Q"),
                         createAttributeValue(getAttribute(category, "Storage"), "512GB SSD")))
                 .images(List.of(
-                    "https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/A182DF3B-87D5-4534-AF9C-05DDE005E007/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/8DBA2F72-7907-48F2-A974-B5C41A05FF8B/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/FD41F737-BF20-45BF-963B-D1A530A8F974/w1000/h732"))
+                    "https://dlcdnwebimgs.asus.com/gain/14C97F28-01B0-4F14-A533-DCA0050E444B/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/8F7222CC-8AC1-4FEA-A91E-AC0019E785F9/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/155A3351-747D-4C06-955D-7F064EAED03B/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/737200F1-7B2B-476D-A800-8B26E2142D40/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/DCEAFDB2-67D2-40F6-98BC-2D46C0CF8C2C/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/D71A2E67-58FA-4CC3-9636-3197E7EB1B16/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/4FC8E71B-C9DB-4F09-B316-D648A4FD56C4/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/5A0537B6-2E85-44E9-AA7B-7AAADB125854/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/E5DFD687-44D4-48EA-A88B-7360FE8C9CEF/w1000/h732"))
                 .stock(7L)
                 .isFeatured(true)
                 .build(),
@@ -325,10 +332,14 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
                         createAttributeValue(getAttribute(category, "Graphic Card"), "Nvidia GTX 1650 Ti"),
                         createAttributeValue(getAttribute(category, "Storage"), "512GB SSD")))
                 .images(List.of(
-                    "https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/A182DF3B-87D5-4534-AF9C-05DDE005E007/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/8DBA2F72-7907-48F2-A974-B5C41A05FF8B/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/FD41F737-BF20-45BF-963B-D1A530A8F974/w1000/h732"))
+                    "https://dlcdnwebimgs.asus.com/gain/C7BA90AC-D74F-4C16-8443-3739E7772D9C/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/62C83C9D-F17B-4A37-9759-3D7B8D8315EE/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/9CF9E7BA-06D4-4854-894C-EA44CA65E07C/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/053623F2-FC61-446C-B01D-62B32481DE7F/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/31678C92-DF68-467A-8D12-E3C74C38E5A5/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/D4FD5834-F4EB-4E90-9D42-D65600924A7B/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/0CC4416D-A816-424D-83B4-874B7E2D92C6/w1000/h732",
+                    "https://dlcdnwebimgs.asus.com/gain/4F343220-2F4D-4118-A5C7-AFB7BA6B83AF/w1000/h732"))
                 .stock(3L)
                 .isFeatured(true)
                 .build(),
@@ -347,14 +358,48 @@ public class DataSeeder implements ApplicationListener<ContextRefreshedEvent> {
                         createAttributeValue(getAttribute(category, "Graphic Card"), "Nvidia GTX 1650 Ti"),
                         createAttributeValue(getAttribute(category, "Storage"), "512GB SSD")))
                 .images(List.of(
-                    "https://dlcdnwebimgs.asus.com/gain/9E8B3BDF-4BB7-45CC-B7BE-F38810969B9A/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/A182DF3B-87D5-4534-AF9C-05DDE005E007/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/8DBA2F72-7907-48F2-A974-B5C41A05FF8B/w1000/h732",
-                    "https://dlcdnwebimgs.asus.com/gain/FD41F737-BF20-45BF-963B-D1A530A8F974/w1000/h732"))
+                  "https://dlcdnwebimgs.asus.com/gain/DC39AD12-74DD-4DA1-966E-F5A8315DC710/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/8093D1E5-7B92-4C11-B7BA-BDB41383ADE6/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/3D204694-18D6-4284-AC19-C64737518660/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/B2499962-1734-413D-A312-A988012AF7C2/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/D1CEC160-A0BD-4A78-8F06-AEEC06895EA8/w1000/h732",
+                  "https://dlcdnwebimgs.asus.com/gain/F4A5B07B-B820-4DF7-AC53-0433671B3E9C/w1000/h732"))
                 .stock(6L)
                 .isFeatured(true)
                 .build()));
       }
+      // "RAM").build(),
+      // Attribute.builder().name("Processor").build(),
+      // Attribute.builder().name("Graphic Card").build(),
+      // Attribute.builder().name("Storage"
+      if (category.getCode().equals("desktop")) {
+        Product.builder()
+            .name("ROG Strix G16CHR")
+            .description(
+                "The ROG Strix G16CHR is designed for high performance gameplay, and looking good doing it. With a mesh front panel, a double D-ring handle, headset holder, and subtle RGB lighting accents, the G16CHR is a perfect blend of form and function.")
+            .price(1499.99)
+            .brand(Brand.builder().id(5L).build())
+            .category(Category.builder().id(2L).build())
+            .offer(Offer.builder().discount(30.0).build())
+            .attributes(
+                List.of(
+                    // createAttributeValue(getAttribute(category, "Brand"), "HP"),
+                    createAttributeValue(getAttribute(category, "RAM"), "16GB DDR5"),
+                    createAttributeValue(getAttribute(category, "Processor"), "Intel Core i7-14700KF"),
+                    createAttributeValue(getAttribute(category, "Graphic Card"), "NVIDIA GeForce RTX4080 16GB"),
+                    createAttributeValue(getAttribute(category, "Storage"), "1TB SSD")))
+            .images(List.of(
+                "https://dlcdnwebimgs.asus.com/gain/FB384021-69AE-445F-8784-C4D2CA4DF9F3/w1000/h732",
+                "https://dlcdnwebimgs.asus.com/gain/AE2CE1D3-FA92-4F11-840B-AE4170A6DC96/w1000/h732",
+                "https://dlcdnwebimgs.asus.com/gain/48A51C6A-2C96-48AC-A543-594CA8BF3347/w1000/h732",
+                "https://dlcdnwebimgs.asus.com/gain/F402AA2F-0F4C-4744-AD2E-D2506CA0A841/w1000/h732",
+                "https://dlcdnwebimgs.asus.com/gain/449F329A-493E-424A-8510-9A9E6D526410/w1000/h732",
+                "https://dlcdnwebimgs.asus.com/gain/5598323B-EA1F-4B8D-8956-4BDF7C694138/w1000/h732"))
+            .stock(6L)
+            .isFeatured(true)
+            .build();
+      }
+
     });
     productRepository.saveAll(products);
   }

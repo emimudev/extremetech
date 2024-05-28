@@ -8,6 +8,14 @@ export type ShoppingOrderStatus =
   | 'DELIVERED'
   | 'CANCELLED'
 
+export const SHOPPING_ORDER_STATUS = {
+  PENDING: 'Pending',
+  CONFIRMED: 'Confirmed',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'Delivered',
+  CANCELLED: 'Cancelled'
+}
+
 export interface OrderRequest {
   items: OrderItemRequest[]
   orderInfo: OrderInfoRequest

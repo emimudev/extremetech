@@ -1,14 +1,16 @@
 import { useAuth } from '@/hooks/use-auth'
 import { Avatar, Divider, Tab, Tabs } from '@nextui-org/react'
 import { HeartIcon, ShoppingBag, UserIcon } from 'lucide-react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Navigate, Outlet, useLocation } from 'react-router-dom'
 
 export default function ClientSettingsPage() {
-  const { user } = useAuth()
+  const { user, isClient } = useAuth()
   const location = useLocation()
   const { pathname } = location
 
   if (!user) return null
+
+  if (!isClient) return <Navigate to='/' />
 
   return (
     <div className='main-padding'>

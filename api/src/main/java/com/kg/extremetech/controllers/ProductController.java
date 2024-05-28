@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kg.extremetech.dtos.ProductFiltersRequestDTO;
+import com.kg.extremetech.dtos.ProductRequestDTO;
 import com.kg.extremetech.dtos.ProductResponseDTO;
+import com.kg.extremetech.entitites.Product;
 import com.kg.extremetech.responses.Response;
 import com.kg.extremetech.services.ProductService;
 
@@ -26,7 +28,7 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<?> find(Integer page, Integer size) {
     return Response.of(page, size,
-        (pageRequest) -> productService.find(pageRequest).map(p -> ProductResponseDTO.from(p)));
+        (pageRequest) -> productService.findSortDesc(pageRequest).map(p -> ProductResponseDTO.from(p)));
   }
 
   @GetMapping("/{productCode}")
@@ -66,6 +68,11 @@ public class ProductController {
     return Response.of(page, size, (pageRequest) -> productService
         .findByFilters(filters, pageRequest)
         .map(p -> ProductResponseDTO.from(p)));
+  }
+
+  @PostMapping
+  public ResponseEntity<?> createProduct(@RequestBody ProductRequestDTO productRequest) {
+    return Response.of(() -> ProductResponseDTO.from(productService.createProduct(productRequest)));
   }
 
   @DeleteMapping("/{productCode}")

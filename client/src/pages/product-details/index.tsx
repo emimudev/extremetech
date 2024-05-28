@@ -3,6 +3,7 @@ import { CartShippingIcon } from '@/components/icons'
 import ProductThumbnails from '@/components/product-thumbnails'
 import { RelatedProducts } from '@/components/related-products'
 import { findLocalCategoryByCode } from '@/data/categories'
+import { useAuth } from '@/hooks/use-auth'
 import { ProductService } from '@/services/product-service'
 import { BreadcrumbItem, Breadcrumbs, Divider } from '@nextui-org/react'
 import { ShoppingCartIcon } from 'lucide-react'
@@ -11,6 +12,7 @@ import useSWR from 'swr'
 
 export default function ProductDetails() {
   const params = useParams()
+  const { isClient } = useAuth()
   const categoryCode = params.categoryCode
   const productCode = params.productCode
   const currentCategory = findLocalCategoryByCode(categoryCode)
@@ -42,34 +44,36 @@ export default function ProductDetails() {
 
   return (
     <div className='min-h-[calc(100vh-var(--navbar-height))] mb-14'>
-      <div className='h-8 flex flex-[0_0_auto] items-center main-padding bg-content1 sm:sticky top-[var(--navbar-height)] z-10 border-b-2'>
-        <Breadcrumbs className='flex items-center py-2'>
-          <BreadcrumbItem as='div'>
-            <Link
-              to='/'
-              className='text-foreground-strong/50 text-xs hover:text-foreground-strong transition-colors rounded-lg'
+      {isClient && (
+        <div className='h-8 flex flex-[0_0_auto] items-center main-padding bg-content1 sm:sticky top-[var(--navbar-height)] z-10 border-b-2'>
+          <Breadcrumbs className='flex items-center py-2'>
+            <BreadcrumbItem as='div'>
+              <Link
+                to='/'
+                className='text-foreground-strong/50 text-xs hover:text-foreground-strong transition-colors rounded-lg'
+              >
+                Home
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem as='div'>
+              <Link
+                to={`/products/${currentCategory.code}`}
+                className='text-foreground-strong/50 text-xs hover:text-foreground-strong transition-colors rounded-lg'
+              >
+                {currentCategory.name}
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              className='overflow-hidden'
+              classNames={{
+                item: 'text-rose-200 text-xs select-auto pointer-events-auto cursor-text !select-auto w-[30vw] truncate block'
+              }}
             >
-              Home
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem as='div'>
-            <Link
-              to={`/products/${currentCategory.code}`}
-              className='text-foreground-strong/50 text-xs hover:text-foreground-strong transition-colors rounded-lg'
-            >
-              {currentCategory.name}
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem
-            className='overflow-hidden'
-            classNames={{
-              item: 'text-rose-200 text-xs select-auto pointer-events-auto cursor-text !select-auto w-[30vw] truncate block'
-            }}
-          >
-            {currentProduct?.name}
-          </BreadcrumbItem>
-        </Breadcrumbs>
-      </div>
+              {currentProduct?.name}
+            </BreadcrumbItem>
+          </Breadcrumbs>
+        </div>
+      )}
       <div className='overflow-x-hidden'>
         <div className='main-padding grid grid-cols-1 lg:grid-cols-7 gap-x-3 lg:gap-8 xs:mt-6'>
           <div className='h-full w-full lg:col-span-4 relative'>
@@ -124,17 +128,19 @@ export default function ProductDetails() {
                 </span>
                 <div>Free shipping and 30 days return</div>
               </div>
-              <div className='lg:flex sticky sm:bottom-4 bottom-16 top-[calc(var(--navbar-height)+0.5rem)] sm:top-[calc(var(--navbar-height)+2.5rem)] z-[5]'>
-                <AddProductToCart
-                  product={currentProduct}
-                  color='primary'
-                  fullWidth
-                  startContent={<ShoppingCartIcon className='w-5 h-5' />}
-                  className='text-white lg:rounded-full min-w-[200px] backdrop-blur-3xl bg-primary/80 w-full font-semibold flex-1 shadow-md'
-                >
-                  Add to Cart
-                </AddProductToCart>
-              </div>
+              {isClient && (
+                <div className='lg:flex sticky sm:bottom-4 bottom-16 top-[calc(var(--navbar-height)+0.5rem)] sm:top-[calc(var(--navbar-height)+2.5rem)] z-[5]'>
+                  <AddProductToCart
+                    product={currentProduct}
+                    color='primary'
+                    fullWidth
+                    startContent={<ShoppingCartIcon className='w-5 h-5' />}
+                    className='text-white lg:rounded-full min-w-[200px] backdrop-blur-3xl bg-primary/80 w-full font-semibold flex-1 shadow-md'
+                  >
+                    Add to Cart
+                  </AddProductToCart>
+                </div>
+              )}
             </div>
             <Divider className='mt-2'></Divider>
             <h2 className='text-foreground-strong text-lg lg:text-xl lg:mb-3 lg:mt-5'>
@@ -142,26 +148,27 @@ export default function ProductDetails() {
             </h2>
             <table className='table border-spacing-x-5 border-separate divide-y divide-divider-strong'>
               <tbody>
-                {Object.entries(currentProduct?.features ?? {}).map(
-                  ([key, value], index) => (
-                    <tr
-                      key={index}
-                      className='[&]:first-of-type:pb-3 [&:not(:first-of-type)]:py-3 [&:not(:first-of-type)]:sm:py-4 [&]:first-of-type:sm:pb-4 gap-2 items-center rtl:space-x-reverse'
-                    >
-                      <td className='py-3 flex-0 flex-shrink-0 space-x-4 min-w-0'>
-                        <div className='text-sm font-medium truncate text-foreground-strong'>
-                          {key}
-                        </div>
-                      </td>
-                      <td
-                        className='py-3 items-center text-sm pr-1'
-                        title={value.toString()}
+                {currentProduct &&
+                  currentProduct?.attributes.map(
+                    ({ attribute: { name }, value }, index) => (
+                      <tr
+                        key={index}
+                        className='[&]:first-of-type:pb-3 [&:not(:first-of-type)]:py-3 [&:not(:first-of-type)]:sm:py-4 [&]:first-of-type:sm:pb-4 gap-2 items-center rtl:space-x-reverse'
                       >
-                        <div className='line-clamp-3 space-x-4'>{value}</div>
-                      </td>
-                    </tr>
-                  )
-                )}
+                        <td className='py-3 flex-0 flex-shrink-0 space-x-4 min-w-0'>
+                          <div className='text-sm font-medium truncate text-foreground-strong'>
+                            {name}
+                          </div>
+                        </td>
+                        <td
+                          className='py-3 items-center text-sm pr-1'
+                          title={value.toString()}
+                        >
+                          <div className='line-clamp-3 space-x-4'>{value}</div>
+                        </td>
+                      </tr>
+                    )
+                  )}
               </tbody>
             </table>
           </div>
@@ -169,14 +176,16 @@ export default function ProductDetails() {
         <div className='main-padding'>
           <Divider className='lg:hidden mt-4 mb-8' />
         </div>
-        <div className='lg:my-6 lg:mt-9'>
-          <h2 className='main-padding text-lg lg:text-2xl lg:mt-18 mb-8'>
-            Related Products
-          </h2>
-          <div className='relative overflow-x-visible main-padding '>
-            <RelatedProducts categoryCode={categoryCode} />
+        {isClient && (
+          <div className='lg:my-6 lg:mt-9'>
+            <h2 className='main-padding text-lg lg:text-2xl lg:mt-18 mb-8'>
+              Related Products
+            </h2>
+            <div className='relative overflow-x-visible main-padding '>
+              <RelatedProducts categoryCode={categoryCode} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { useAuth } from '@/hooks/use-auth'
 import { OrdersService } from '@/services/orders-service'
 import {
   Chip,
+  Link,
   Pagination,
   Table,
   TableBody,
@@ -12,10 +13,10 @@ import {
 } from '@nextui-org/react'
 import { format, formatRelative } from 'date-fns'
 import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Link as RouterLink } from 'react-router-dom'
 import useSWR from 'swr'
 
-const chipColors = {
+export const chipColors = {
   PENDING: 'bg-slate-500/40 text-slate-200',
   CONFIRMED: 'bg-sky-600/40 text-sky-100',
   SHIPPED: 'bg-indigo-600/40 text-indigo-100',
@@ -40,18 +41,13 @@ export default function ClientOrdersPage() {
     { keepPreviousData: true }
   )
 
-  console.log({ data, isLoading })
-
-  if (!data && !isLoading) return <Navigate to={'/'} />
   if (!isAuthenticated) return <Navigate to={'/'} />
+
+  if (!data) return null
 
   const pageResult = data!
 
-  if (!pageResult) return null
-
   const { results: orders, page, totalPages } = pageResult
-
-  const loadingState = isLoading || orders.length === 0 ? 'loading' : 'idle'
 
   return (
     <div className='flex flex-col pb-16 text-'>
@@ -79,17 +75,27 @@ export default function ClientOrdersPage() {
       >
         <TableHeader>
           <TableColumn>Order ID</TableColumn>
+          <TableColumn>Customer</TableColumn>
           <TableColumn>Status</TableColumn>
           <TableColumn>Total</TableColumn>
           <TableColumn>Ordered</TableColumn>
         </TableHeader>
         <TableBody
           emptyContent={"You haven't placed any orders yet"}
-          loadingState={loadingState}
+          isLoading={isLoading}
         >
           {orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>{order.id}</TableCell>
+              <TableCell>
+                <Link
+                  as={RouterLink}
+                  to={`/orders/${order.id}`}
+                  className='text-emerald-400'
+                >
+                  {order.customer.fullName}
+                </Link>
+              </TableCell>
               <TableCell>
                 <Chip
                   size='sm'

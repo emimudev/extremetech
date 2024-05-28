@@ -41,7 +41,7 @@ public class Product {
   @UuidGenerator
   private String code;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private String name;
 
   private String description;

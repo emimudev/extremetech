@@ -1,15 +1,22 @@
 package com.kg.extremetech.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kg.extremetech.dtos.ProductFiltersRequestDTO;
+import com.kg.extremetech.dtos.ProductRequestDTO;
+import com.kg.extremetech.entitites.AttributeValue;
+import com.kg.extremetech.entitites.Offer;
 import com.kg.extremetech.entitites.Product;
 import com.kg.extremetech.entitites.QAttribute;
 import com.kg.extremetech.entitites.QAttributeValue;
@@ -40,7 +47,7 @@ public class ProductService extends BaseServiceImp<Product, Long, ProductReposit
         .innerJoin(attributeValue.attribute, attribute)
         .where(product.isOnSale.isTrue());
 
-    if(brands != null && !brands.isEmpty()) {
+    if (brands != null && !brands.isEmpty()) {
       countQuery.where(product.brand.name.in(brands));
     }
 
@@ -57,7 +64,7 @@ public class ProductService extends BaseServiceImp<Product, Long, ProductReposit
 
     System.out.println("total " + total);
 
-    if(pageable.getPageSize() * pageable.getPageNumber() > total) {
+    if (pageable.getPageSize() * pageable.getPageNumber() > total) {
       return new PageImpl<Product>(List.of(), pageable, total);
     }
 
@@ -67,7 +74,7 @@ public class ProductService extends BaseServiceImp<Product, Long, ProductReposit
         .innerJoin(attributeValue.attribute, attribute)
         .where(product.isOnSale.isTrue());
 
-    if(brands != null && !brands.isEmpty()) {
+    if (brands != null && !brands.isEmpty()) {
       query.where(product.brand.name.in(brands));
     }
 
@@ -79,7 +86,7 @@ public class ProductService extends BaseServiceImp<Product, Long, ProductReposit
           product.attributes.any().attribute.name.eq(key)
               .and(product.attributes.any().value.in(values)));
     }
-    
+
     final var size = pageable.getPageSize();
     final var page = pageable.getPageNumber();
     final var offset = page * size;
@@ -93,6 +100,12 @@ public class ProductService extends BaseServiceImp<Product, Long, ProductReposit
     var pagedResults = results.subList(offset, Math.min(offset + size, results.size()));
 
     return new PageImpl<Product>(pagedResults, pageable, total);
+  }
+
+  public Page<Product> findSortDesc(Pageable pageable) {
+    final var pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+        Sort.by(Direction.DESC, "id"));
+    return repository.findAll(pageRequest);
   }
 
   public Page<Product> findByName(String name, Pageable pageable) {
@@ -117,6 +130,36 @@ public class ProductService extends BaseServiceImp<Product, Long, ProductReposit
 
   public Product removeByCode(String code) {
     return repository.removeByCode(code).orElseThrow();
+  }
+
+  public Product createProduct(ProductRequestDTO productRequest) {
+    final var offer = productRequest.getOffer() != null ? Offer.builder()
+        .discount(productRequest.getOffer().getDiscount())
+        .build() : null;
+
+    final var attributes = productRequest.getAttributes().stream()
+        .map(attr -> AttributeValue.builder()
+            .value(attr.getValue())
+            .attribute(attr.getAttribute())
+            .build())
+        .collect(Collectors.toList());
+
+    final var productToAdd = Product.builder()
+        .name(productRequest.getName())
+        .description(productRequest.getDescription())
+        .price(productRequest.getPrice())
+        .offer(offer)
+        .attributes(attributes)
+        .brand(productRequest.getBrand())
+        .category(productRequest.getCategory())
+        .isOnSale(productRequest.getIsOnSale())
+        .stock(productRequest.getStock())
+        .images(productRequest.getImages())
+        .isFeatured(productRequest.getIsFeatured())
+        .features(productRequest.getFeatures())
+        .build();
+
+    return repository.save(productToAdd);
   }
 
 }

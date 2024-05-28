@@ -50,6 +50,7 @@ export default function AuthContextProvider({
     if (!auth) {
       return
     }
+    if (!auth.user || auth.user.role.type !== 'CLIENT') return
     CartService.getMyCart()
       .then((res) => {
         // console.log('MyCart', res)
