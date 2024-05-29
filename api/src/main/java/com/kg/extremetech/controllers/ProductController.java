@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kg.extremetech.dtos.ProductFiltersRequestDTO;
 import com.kg.extremetech.dtos.ProductRequestDTO;
 import com.kg.extremetech.dtos.ProductResponseDTO;
-import com.kg.extremetech.entitites.Product;
 import com.kg.extremetech.responses.Response;
 import com.kg.extremetech.services.ProductService;
 

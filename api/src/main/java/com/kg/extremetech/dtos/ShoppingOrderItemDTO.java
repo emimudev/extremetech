@@ -1,7 +1,6 @@
 package com.kg.extremetech.dtos;
 
 import java.util.Date;
-import java.util.List;
 
 import com.kg.extremetech.entitites.ShoppingOrderItem;
 
@@ -31,15 +30,5 @@ public class ShoppingOrderItemDTO {
         .addedAt(item.getAddedAt())
         .build();
   }
-
-  // public static ShoppingOrderItemDTO from(ShoppingOrderItemRequestDTO itemDTO) {
-  //   return ShoppingOrderItemDTO.builder()
-  //       .product(itemDTO.getProduct())
-  //       .quantity(itemDTO.getQuantity())
-  //       .order(itemDTO.getOrder())
-  //       .build();
-  // }
-
- 
 
 }

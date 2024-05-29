@@ -52,7 +52,7 @@ export function CartDropdown() {
                 >
                   <RouterLink
                     className='flex flex-1 p-2.5 px-3'
-                    to={`/products/${item.product.category.code}/${item.product.code}`}
+                    to={`/products/${item?.product?.category?.code}/${item?.product?.code}`}
                   >
                     <div className='flex-[0_0_auto] bg-content2/60 group-hover:bg-content3/50 rounded-md p-0.5'>
                       <img
